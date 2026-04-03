@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoot The Whitsundays — Electric Scooter & Moped Rentals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #faf6f1;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-hero: linear-gradient(135deg, #1a1028 0%, #3d1832 20%, #8b2a3a 45%, #c44a2f 65%, #e8853a 82%, #f5c45a 100%);
+            --accent-red: #c0392b;
+            --accent-red-light: #d94f3f;
+            --accent-warm: #e07a3a;
+            --accent-gold: #e8a830;
+            --accent-deep: #8b2a3a;
+            --text-primary: #2c1810;
+            --text-secondary: #6b4e42;
+            --text-muted: #a08878;
+            --border: #e8ddd4;
+            --shadow-sm: 0 1px 3px rgba(44,24,16,0.06);
+            --shadow-md: 0 4px 16px rgba(44,24,16,0.08);
+            --shadow-lg: 0 12px 40px rgba(44,24,16,0.12);
+            --radius: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Hero Header */
+        .hero {
+            background: var(--bg-hero);
+            padding: 3.5rem 2rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--bg-primary);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 80%, rgba(232,133,58,0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 20%, rgba(26,16,40,0.2) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.4rem, 7vw, 4rem);
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #fde8c8;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+        }
+
+        .admin-badge {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-red);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: none;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            animation: pulse 2s infinite;
+        }
+
+        .admin-badge.active { display: block; }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(192,57,43,0); }
+        }
+
+        /* Main */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .section-icon.scooter { background: #fde8c8; }
+        .section-icon.moped { background: #f5d5d0; }
+
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.15rem;
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #fde8c8 0%, #f5d5d0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .availability-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .availability-badge.available {
+            background: #e8f5d4;
+            color: #3d7a15;
+        }
+
+        .availability-badge.unavailable {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-primary);
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .pricing {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .price-tag {
+            background: var(--bg-primary);
+            padding: 0.6rem 0.8rem;
+            border-radius: 0.6rem;
+            flex: 1;
+            text-align: center;
+        }
+
+        .price-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.15rem;
+        }
+
+        .price-value {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent-red);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.7rem 1.25rem;
+            border-radius: 0.6rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-red);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-red-light);
+            box-shadow: 0 4px 12px rgba(192,57,43,0.3);
+        }
+
+        .btn-call {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-call:hover {
+            background: #edf2f7;
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #edf2f7;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .btn-disabled {
+            background: var(--bg-primary);
+            color: var(--text-muted);
+            cursor: default;
+            opacity: 0.6;
+        }
+
+        /* Admin Controls */
+        .admin-controls {
+            display: none;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .admin-controls.active { display: flex; }
+
+        .admin-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .admin-btn:hover { background: #edf2f7; }
+        .admin-btn.delete { color: #dc2626; border-color: #fecaca; }
+        .admin-btn.delete:hover { background: #fef2f2; }
+        .admin-btn.toggle-avail { color: var(--accent-warm); border-color: #f5d5c0; }
+
+        /* Add Card */
+        .add-product-card {
+            display: none;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            min-height: 300px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: transparent;
+        }
+
+        .add-product-card.active { display: flex; }
+
+        .add-product-card:hover {
+            border-color: var(--accent-red);
+            background: rgba(192,57,43,0.03);
+        }
+
+        .add-product-content {
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .add-icon {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            color: var(--accent-red);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0.25rem;
+            line-height: 1;
+        }
+
+        .modal-close:hover { color: var(--text-primary); }
+
+        .modal-body { padding: 1.5rem; }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Forms */
+        .form-group { margin-bottom: 1rem; }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+        }
+
+        textarea.form-input {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .form-check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-red);
+            cursor: pointer;
+        }
+
+        .form-check label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        /* Booking Modal Calendar */
+        .booking-calendar {
+            margin: 1rem 0;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .cal-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .cal-nav {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .cal-nav button {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .cal-nav button:hover {
+            background: #edf2f7;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .cal-day-label {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding: 0.3rem;
+            font-weight: 500;
+        }
+
+        .cal-day {
+            text-align: center;
+            padding: 0.4rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .cal-day.empty { cursor: default; }
+        .cal-day.past { color: var(--text-muted); opacity: 0.4; cursor: default; }
+
+        .cal-day.available:hover {
+            background: #fde8c8;
+        }
+
+        .cal-day.selected-start,
+        .cal-day.selected-end {
+            background: var(--accent-red);
+            color: white;
+            font-weight: 600;
+        }
+
+        .cal-day.in-range {
+            background: #fde8d8;
+            color: var(--accent-red);
+        }
+
+        .cal-day.booked {
+            background: #fee2e2;
+            color: #dc2626;
+            cursor: default;
+            text-decoration: line-through;
+        }
+
+        .date-selection-summary {
+            background: var(--bg-primary);
+            border-radius: 0.6rem;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .date-selection-summary strong {
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--accent-deep);
+            color: white;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            z-index: 3000;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* Gallery */
+        .gallery {
+            position: relative;
+            background: #1a1028;
+            overflow: hidden;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s;
+            line-height: 1;
+        }
+
+        .gallery-nav:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .gallery-prev { left: 0.75rem; }
+        .gallery-next { right: 0.75rem; }
+
+        .gallery-dots {
+            position: absolute;
+            bottom: 0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+
+        .gallery-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .gallery-dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
+
+        /* Clickable card */
+        .product-card { cursor: pointer; }
+
+        /* Phone button */
+        .btn-call .phone-number { display: none; }
+
+        @media (min-width: 601px) {
+            .btn-call .phone-label { display: none; }
+            .btn-call .phone-number { display: inline; }
+        }
+
+        /* Form sections */
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-section-title::before {
+            content: '';
+            width: 3px;
+            height: 1.1rem;
+            background: var(--accent-red);
+            border-radius: 2px;
+        }
+
+        .declaration-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.6rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .declaration-box strong {
+            color: var(--text-primary);
+        }
+
+        .price-summary-box {
+            background: linear-gradient(135deg, #fde8c8 0%, #f5d5d0 100%);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.35rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .price-summary-row.total {
+            border-top: 2px solid rgba(44,24,16,0.15);
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .form-radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .form-radio {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+        }
+
+        .form-radio input[type="radio"] {
+            accent-color: var(--accent-red);
+            cursor: pointer;
+        }
+
+        .form-radio label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        /* Image upload hover */
+        label:has(#imageUpload):hover {
+            background: #eee5dc !important;
+            border-color: var(--accent-red) !important;
+            color: var(--accent-red) !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero { padding: 2rem 1.5rem 3rem; }
+            main { padding: 1.5rem 1rem 3rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .gallery-img { height: 260px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-badge" id="adminBadge">Admin Mode</div>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="logo">Scoot The Whitsundays</h1>
+            <p class="tagline">The best way to explore the Whitsundays!</p>
+        </div>
+    </header>
+
+    <!-- Warm accent strip below hero -->
+    <div style="height:4px; background:linear-gradient(90deg, var(--accent-deep), var(--accent-red), var(--accent-warm), var(--accent-gold));"></div>
+
+    <main>
+        <!-- Mopeds Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon moped">🛵</div>
+                <div>
+                    <h2 class="section-title">Mopeds</h2>
+                    <p class="section-subtitle"><strong>All mopeds are 50cc, so can be driven on a regular car licence!</strong></p>
+                </div>
+            </div>
+            <div class="products-grid" id="mopedsGrid"></div>
+        </section>
+
+        <!-- Electric Scooters Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon scooter">⚡</div>
+                <div>
+                    <h2 class="section-title">Electric Scooters</h2>
+                    <p class="section-subtitle">Zip around town emission-free</p>
+                </div>
+            </div>
+            <div class="products-grid" id="scootersGrid"></div>
+        </section>
+    </main>
+
+    <footer style="background: #2c1810; color: rgba(255,255,255,0.6);">
+        <p>&copy; 2026 Scoot The Whitsundays. All rights reserved.</p>
+    </footer>
+
+    <!-- Edit/Add Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add Vehicle</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Name</label>
+                        <input type="text" class="form-input" id="productName" placeholder="e.g., Vespa Sprint 150" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-input" id="productCategory">
+                            <option value="scooter">Electric Scooter</option>
+                            <option value="moped">Moped</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input" id="productDescription" placeholder="Features, specs, etc."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Image</label>
+                        <div id="imagePreview" style="display:none; margin-bottom:0.75rem; border-radius:0.5rem; overflow:hidden; border:1px solid var(--border); max-height:180px;">
+                            <img id="imagePreviewImg" style="width:100%; max-height:180px; object-fit:cover; display:block;" alt="Preview">
+                        </div>
+                        <div style="display:flex; gap:0.5rem; align-items:stretch;">
+                            <input type="text" class="form-input" id="productImage" placeholder="Image URL or upload a file" style="flex:1;">
+                            <label style="display:inline-flex; align-items:center; gap:0.3rem; padding:0.65rem 1rem; background:var(--bg-primary); border:1px solid var(--border); border-radius:0.5rem; cursor:pointer; font-size:0.85rem; font-weight:500; color:var(--text-secondary); white-space:nowrap; transition:all 0.2s;">
+                                Upload
+                                <input type="file" accept="image/*" id="imageUpload" onchange="handleImageUpload(event)" style="display:none;">
+                            </label>
+                        </div>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.35rem;">Upload a photo or paste a URL / local path (e.g. Static/folder/image.jpg)</p>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Daily Price ($)</label>
+                            <input type="number" class="form-input" id="dailyPrice" placeholder="45" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Weekly Price ($)</label>
+                            <input type="number" class="form-input" id="weeklyPrice" placeholder="250" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProduct()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking / Rental Agreement Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="bookingModalTitle">Rental Agreement</h3>
+                <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+
+                    <!-- Rental Period & Pricing -->
+                    <div class="form-section">
+                        <div class="form-section-title">Rental Period</div>
+                        <div class="form-group">
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Click a start date, then an end date</p>
+                            <div class="booking-calendar" id="bookingCalendar"></div>
+                            <div class="date-selection-summary" id="dateSummary">No dates selected</div>
+                        </div>
+                        <div class="price-summary-box" id="priceSummary" style="display:none;"></div>
+                    </div>
+
+                    <!-- Renter Details -->
+                    <div class="form-section">
+                        <div class="form-section-title">Renter Details</div>
+                        <div class="form-group">
+                            <label class="form-label">Full Legal Name *</label>
+                            <input type="text" class="form-input" id="bookingName" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth *</label>
+                                <input type="date" class="form-input" id="bookingDOB" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-input" id="bookingPhone" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" class="form-input" id="bookingEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Address (while renting)</label>
+                            <input type="text" class="form-input" id="bookingAddress" placeholder="e.g., Airlie Beach Hotel, Room 12">
+                        </div>
+                    </div>
+
+                    <!-- Licence Details -->
+                    <div class="form-section">
+                        <div class="form-section-title">Licence Details</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Country That Issued Licence</label>
+                                <input type="text" class="form-input" id="bookingLicCountry" placeholder="e.g., Australia">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Licence Number *</label>
+                                <input type="text" class="form-input" id="bookingLicNumber" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Licence Type *</label>
+                            <div class="form-radio-group">
+                                <div class="form-radio">
+                                    <input type="radio" name="licType" id="licFull" value="Full car licence">
+                                    <label for="licFull">Full car licence</label>
+                                </div>
+                                <div class="form-radio">
+                                    <input type="radio" name="licType" id="licProv" value="Provisional car licence">
+                                    <label for="licProv">Provisional</label>
+                                </div>
+                                <div class="form-radio">
+                                    <input type="radio" name="licType" id="licMoto" value="Motorcycle licence">
+                                    <label for="licMoto">Motorcycle</label>
+                                </div>
+                                <div class="form-radio">
+                                    <input type="radio" name="licType" id="licIntl" value="International licence">
+                                    <label for="licIntl">International</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Licence Expiry Date</label>
+                                <input type="date" class="form-input" id="bookingLicExpiry">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Held licence 12+ months? *</label>
+                                <select class="form-input" id="bookingLic12m" required>
+                                    <option value="">Select...</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Driving History -->
+                    <div class="form-section">
+                        <div class="form-section-title">Driving &amp; Claims History</div>
+                        <div class="form-group">
+                            <label class="form-label">In the past 5 years, have you been involved in any at-fault motor vehicle accidents? *</label>
+                            <select class="form-input" id="bookingAccidents" required onchange="document.getElementById('accidentDetail').style.display = this.value === 'Yes' ? 'block' : 'none';">
+                                <option value="">Select...</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="accidentDetail" style="display:none;">
+                            <label class="form-label">If yes, please explain</label>
+                            <textarea class="form-input" id="bookingAccidentInfo" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Do you have any current driving restrictions or conditions? *</label>
+                            <select class="form-input" id="bookingRestrictions" required onchange="document.getElementById('restrictionDetail').style.display = this.value === 'Yes' ? 'block' : 'none';">
+                                <option value="">Select...</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="restrictionDetail" style="display:none;">
+                            <label class="form-label">If yes, please explain</label>
+                            <textarea class="form-input" id="bookingRestrictionInfo" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Payment Agreement -->
+                    <div class="form-section">
+                        <div class="form-section-title">Payment Agreement</div>
+                        <div class="declaration-box" id="paymentTerms"></div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="agreePayment" required>
+                                <label for="agreePayment">I agree to the rental fee and bond terms above *</label>
+                            </div>
+                        </div>
+                        <div class="declaration-box">
+                            I understand that it is my responsibility to notify the owner when I want to <strong>return the scooter</strong> in order to end the rental. Rental charges will continue to apply until the scooter has been <strong>physically returned</strong> to the owner.
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="agreeReturn" required>
+                                <label for="agreeReturn">I understand and agree *</label>
+                            </div>
+                        </div>
+                        <div class="declaration-box">
+                            I understand that if a scheduled payment fails or is missed, I am required to <strong>return the scooter immediately</strong> upon request. Continued use of the scooter without payment may be treated as unauthorised use.
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="agreeMissed" required>
+                                <label for="agreeMissed">I understand and agree *</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Declarations -->
+                    <div class="form-section">
+                        <div class="form-section-title">Important Declarations</div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="declareTrue" required>
+                                <label for="declareTrue">I confirm that all information provided above is true and correct *</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="declareLicence" required>
+                                <label for="declareLicence">I confirm that I hold a valid licence and am legally allowed to ride a 50cc scooter in Queensland *</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="declareFalse" required>
+                                <label for="declareFalse">I understand that providing false or misleading information may void insurance coverage and result in full personal liability *</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="declareDamage" required>
+                                <label for="declareDamage">I understand that I am financially responsible for any damage, fines, or losses not covered by insurance *</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="declareRide" required>
+                                <label for="declareRide">I agree to ride the scooter responsibly and in accordance with Queensland road laws *</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Digital Signature -->
+                    <div class="form-section">
+                        <div class="form-section-title">Digital Signature</div>
+                        <div class="form-group">
+                            <label class="form-label">Full Name (digital signature) *</label>
+                            <input type="text" class="form-input" id="bookingSignature" required placeholder="Type your full legal name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date Signed *</label>
+                            <input type="date" class="form-input" id="bookingSignDate" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="agreeBinding" required>
+                                <label for="agreeBinding">By typing my name above, I acknowledge this form constitutes a legally binding declaration *</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitBooking()" id="submitBookingBtn">Submit Rental Agreement</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail / Gallery Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width:640px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="detailModalTitle">Vehicle Details</h3>
+                <button class="modal-close" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <!-- Gallery -->
+                <div class="gallery" id="detailGallery">
+                    <img id="galleryImg" class="gallery-img" alt="Vehicle photo">
+                    <button class="gallery-nav gallery-prev" onclick="galleryPrev()">&#8249;</button>
+                    <button class="gallery-nav gallery-next" onclick="galleryNext()">&#8250;</button>
+                    <div class="gallery-dots" id="galleryDots"></div>
+                </div>
+                <!-- Info -->
+                <div style="padding:1.5rem;">
+                    <p class="product-description" id="detailDescription" style="margin-bottom:1.25rem;"></p>
+                    <div class="pricing" id="detailPricing" style="margin-bottom:1.25rem;"></div>
+                    <div class="product-actions" id="detailActions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Availability Modal (Admin) -->
+    <div class="modal-overlay" id="availabilityModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Booked Dates</h3>
+                <button class="modal-close" onclick="closeAvailabilityModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size:0.9rem;">Click dates to mark them as booked/available:</p>
+                <div id="availabilityCalendar"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeAvailabilityModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ─── EmailJS Config ──────────────────────────────────────────
+        // Sign up at https://www.emailjs.com (free tier = 200 emails/month)
+        // 1. Create an email service (e.g. Gmail) → copy the Service ID
+        // 2. Create an email template with variables:
+        //    {{vehicle_name}}, {{vehicle_category}},
+        //    {{customer_name}}, {{customer_dob}}, {{customer_email}},
+        //    {{customer_phone}}, {{customer_address}},
+        //    {{licence_country}}, {{licence_number}}, {{licence_type}},
+        //    {{licence_expiry}}, {{licence_12_months}},
+        //    {{at_fault_accidents}}, {{accident_details}},
+        //    {{driving_restrictions}}, {{restriction_details}},
+        //    {{start_date}}, {{end_date}}, {{num_days}},
+        //    {{rental_cost}}, {{bond}}, {{total_cost}},
+        //    {{digital_signature}}, {{date_signed}},
+        //    {{rental_form_completed}}
+        // 3. Copy your Public Key, Service ID, and Template ID below:
+        const EMAILJS_PUBLIC_KEY = '0D1a6ZB0cPnljQDsf';
+        const EMAILJS_SERVICE_ID = 'service_yoorwqm';
+        const EMAILJS_TEMPLATE_ID = 'template_o7f1my8';
+
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+        // ─── State ───────────────────────────────────────────────────
+        let products = [];
+        let isAdmin = false;
+        let codeBuffer = '';
+        const ADMIN_CODE = '270304';
+        let currentEditId = null;
+        let currentAvailabilityId = null;
+        let availCalMonth = null;
+
+        // Booking calendar state
+        let bookingCalMonth = null;
+        let bookingStartDate = null;
+        let bookingEndDate = null;
+        let bookingVehicleId = null;
+
+        // ─── Init ────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            renderAll();
+            setupKeyListener();
+
+            const imgInput = document.getElementById('productImage');
+            if (imgInput) {
+                imgInput.addEventListener('input', () => updateImagePreview(imgInput.value));
+            }
+        });
+
+        function setupKeyListener() {
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+                if (/^\d$/.test(e.key)) {
+                    codeBuffer += e.key;
+                    if (codeBuffer.length > 6) codeBuffer = codeBuffer.slice(-6);
+                    if (codeBuffer === ADMIN_CODE) {
+                        toggleAdminMode();
+                        codeBuffer = '';
+                    }
+                }
+            });
+        }
+
+        function toggleAdminMode() {
+            isAdmin = !isAdmin;
+            document.getElementById('adminBadge').classList.toggle('active', isAdmin);
+            renderAll();
+            showNotification(isAdmin ? 'Admin mode activated' : 'Admin mode deactivated');
+        }
+
+        // ─── Data ────────────────────────────────────────────────────
+        function loadProducts() {
+            const stored = localStorage.getItem('scootWhitsundaysProducts_v4');
+            if (stored) {
+                products = JSON.parse(stored);
+            } else {
+                products = [
+                    {
+                        id: '1',
+                        category: 'moped',
+                        name: 'Kymco Like 50cc',
+                        description: 'Classic Italian styling with modern reliability. Smooth automatic transmission, rear storage box, and great fuel economy. Helmets included. About $5 to refuel. Not ideal for steep hills, especially with two riders. Pickup and drop-off can be arranged.',
+                        image: 'Static/Kymco like 50cc/Red scooter at sunset by the beach.png',
+                        gallery: [
+                            'Static/Kymco like 50cc/Red scooter at sunset by the beach.png',
+                            'Static/Kymco like 50cc/ChatGPT Image Apr 3, 2026, 01_38_50 PM.png',
+                            'Static/Kymco like 50cc/fe50a166-568e-4b14-b96a-167f93731c4c.jpg',
+                            'Static/Kymco like 50cc/9f2203d5-d432-42e7-b52e-de48d39334f1.jpg',
+                            'Static/Kymco like 50cc/0e4d1708-24d4-4aa1-a496-706356a79912.jpg',
+                            'Static/Kymco like 50cc/f3314c29-ab55-4b6c-b70f-ee91d4a58622.jpg'
+                        ],
+                        dailyPrice: 55,
+                        weeklyPrice: 300,
+                        available: true,
+                        bookedDates: []
+                    },
+                    {
+                        id: '2',
+                        category: 'moped',
+                        name: 'Red Devil 50cc',
+                        description: 'Nimble and fun to ride around Airlie Beach. Lightweight, easy handling, and plenty of character. Helmets included. About $5 to refuel. Not ideal for steep hills, especially with two riders. Pickup and drop-off can be arranged.',
+                        image: 'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
+                        gallery: [
+                            'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
+                            'Static/Red Devil 50cc/68b9e7bb-73f1-407c-bfe6-af64bcd3787e.png',
+                            'Static/Red Devil 50cc/5102254a-8c02-48ef-a597-96c55a5c381c.jpg',
+                            'Static/Red Devil 50cc/2f52d454-1664-48d2-be9b-2d7ccf57495b.jpg',
+                            'Static/Red Devil 50cc/c071ca9d-ba0e-44c6-8d78-361d0e102218.jpg'
+                        ],
+                        dailyPrice: 45,
+                        weeklyPrice: 250,
+                        available: true,
+                        bookedDates: []
+                    },
+                    {
+                        id: '3',
+                        category: 'moped',
+                        name: 'SYM Mio 50cc',
+                        description: 'Stylish and comfortable with a smooth ride. Perfect for cruising the coast and exploring at your own pace. Helmets included. About $5 to refuel. Not ideal for steep hills, especially with two riders. Pickup and drop-off can be arranged.',
+                        image: 'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
+                        gallery: [
+                            'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
+                            'Static/SYM Mio 50cc/2ccdb708-bc5b-4a00-a380-d8c2c192bdc2.png'
+                        ],
+                        dailyPrice: 45,
+                        weeklyPrice: 250,
+                        available: true,
+                        bookedDates: []
+                    }
+                ];
+                saveProducts();
+            }
+        }
+
+        function saveProducts() {
+            localStorage.setItem('scootWhitsundaysProducts_v4', JSON.stringify(products));
+        }
+
+        // ─── Render ──────────────────────────────────────────────────
+        function renderAll() {
+            renderSection('scooter', 'scootersGrid');
+            renderSection('moped', 'mopedsGrid');
+        }
+
+        function renderSection(category, gridId) {
+            const grid = document.getElementById(gridId);
+            const items = products.filter(p => p.category === category);
+
+            if (items.length === 0 && !isAdmin) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);">
+                        <div style="font-size:2.5rem; margin-bottom:0.5rem;">${category === 'scooter' ? '⚡' : '🛵'}</div>
+                        <p>No ${category === 'scooter' ? 'electric scooters' : 'mopeds'} listed yet — check back soon!</p>
+                    </div>`;
+                return;
+            }
+
+            let html = items.map(p => renderCard(p)).join('');
+
+            if (isAdmin) {
+                html += `
+                    <div class="add-product-card active" onclick="openAddModal('${category}')">
+                        <div class="add-product-content">
+                            <div class="add-icon">+</div>
+                            <p>Add ${category === 'scooter' ? 'Electric Scooter' : 'Moped'}</p>
+                        </div>
+                    </div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function renderCard(product) {
+            const imgContent = product.image
+                ? `<img src="${product.image}" alt="${product.name}">`
+                : (product.category === 'scooter' ? '⚡' : '🛵');
+
+            const isMoped = product.category === 'moped';
+            const availBadge = isMoped
+                ? `<div class="availability-badge ${product.available ? 'available' : 'unavailable'}">${product.available ? 'Available' : 'Unavailable'}</div>`
+                : '';
+
+            const canBook = isMoped ? product.available : true;
+
+            const bookBtn = canBook
+                ? `<button class="btn btn-primary" onclick="event.stopPropagation(); openBookingModal('${product.id}')">Request Booking</button>`
+                : `<span class="btn btn-disabled">Currently Unavailable</span>`;
+
+            return `
+                <div class="product-card" onclick="openDetailModal('${product.id}')">
+                    <div class="product-image">
+                        ${imgContent}
+                        ${availBadge}
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description || 'No description available.'}</p>
+                        <div class="pricing">
+                            <div class="price-tag">
+                                <div class="price-label">Daily</div>
+                                <div class="price-value">$${product.dailyPrice}</div>
+                            </div>
+                            <div class="price-tag">
+                                <div class="price-label">Weekly</div>
+                                <div class="price-value">$${product.weeklyPrice}</div>
+                            </div>
+                        </div>
+                        <div class="product-actions">
+                            ${bookBtn}
+                            <a href="tel:+610478393479" class="btn btn-call" onclick="event.stopPropagation();"><span class="phone-label">Call Us</span><span class="phone-number">+61 0478 393 479</span></a>
+                        </div>
+                        <div class="admin-controls ${isAdmin ? 'active' : ''}">
+                            <button class="admin-btn" onclick="event.stopPropagation(); openEditModal('${product.id}')">Edit</button>
+                            ${isMoped ? `<button class="admin-btn toggle-avail" onclick="event.stopPropagation(); toggleAvailability('${product.id}')">${product.available ? 'Mark Unavailable' : 'Mark Available'}</button>` : ''}
+                            <button class="admin-btn" onclick="event.stopPropagation(); openAvailabilityModal('${product.id}')">Manage Dates</button>
+                            <button class="admin-btn delete" onclick="event.stopPropagation(); deleteProduct('${product.id}')">Delete</button>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // ─── Availability Toggle (Moped) ────────────────────────────
+        function toggleAvailability(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            p.available = !p.available;
+            saveProducts();
+            renderAll();
+            showNotification(`${p.name} marked as ${p.available ? 'available' : 'unavailable'}`);
+        }
+
+        // ─── Detail / Gallery Modal ──────────────────────────────────
+        let detailProductId = null;
+        let galleryIndex = 0;
+        let galleryImages = [];
+
+        function openDetailModal(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            detailProductId = id;
+
+            document.getElementById('detailModalTitle').textContent = p.name;
+            document.getElementById('detailDescription').textContent = p.description || 'No description available.';
+
+            document.getElementById('detailPricing').innerHTML = `
+                <div class="price-tag">
+                    <div class="price-label">Daily</div>
+                    <div class="price-value">$${p.dailyPrice}</div>
+                </div>
+                <div class="price-tag">
+                    <div class="price-label">Weekly</div>
+                    <div class="price-value">$${p.weeklyPrice}</div>
+                </div>`;
+
+            const canBook = p.category === 'moped' ? p.available : true;
+            const bookBtn = canBook
+                ? `<button class="btn btn-primary" onclick="closeDetailModal(); openBookingModal('${p.id}')">Request Booking</button>`
+                : `<span class="btn btn-disabled">Currently Unavailable</span>`;
+            document.getElementById('detailActions').innerHTML = `
+                ${bookBtn}
+                <a href="tel:+610478393479" class="btn btn-call"><span class="phone-label">Call Us</span><span class="phone-number">+61 0478 393 479</span></a>`;
+
+            galleryImages = (p.gallery && p.gallery.length > 0) ? p.gallery : (p.image ? [p.image] : []);
+            galleryIndex = 0;
+            updateGallery();
+
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            detailProductId = null;
+        }
+
+        function updateGallery() {
+            const img = document.getElementById('galleryImg');
+            const dotsEl = document.getElementById('galleryDots');
+            const prevBtn = document.querySelector('.gallery-prev');
+            const nextBtn = document.querySelector('.gallery-next');
+
+            if (galleryImages.length === 0) {
+                img.style.display = 'none';
+                dotsEl.innerHTML = '';
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                return;
+            }
+
+            img.style.display = 'block';
+            img.src = galleryImages[galleryIndex];
+            prevBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
+            nextBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
+
+            dotsEl.innerHTML = galleryImages.map((_, i) =>
+                `<div class="gallery-dot ${i === galleryIndex ? 'active' : ''}" onclick="galleryGoTo(${i})"></div>`
+            ).join('');
+        }
+
+        function galleryPrev() {
+            galleryIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateGallery();
+        }
+
+        function galleryNext() {
+            galleryIndex = (galleryIndex + 1) % galleryImages.length;
+            updateGallery();
+        }
+
+        function galleryGoTo(i) {
+            galleryIndex = i;
+            updateGallery();
+        }
+
+        // Swipe support for gallery
+        (function() {
+            let touchStartX = 0;
+            document.addEventListener('DOMContentLoaded', () => {
+                const gallery = document.getElementById('detailGallery');
+                if (!gallery) return;
+                gallery.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+                gallery.addEventListener('touchend', (e) => {
+                    const dx = e.changedTouches[0].clientX - touchStartX;
+                    if (Math.abs(dx) > 50) {
+                        if (dx < 0) galleryNext();
+                        else galleryPrev();
+                    }
+                }, { passive: true });
+            });
+        })();
+
+        // ─── Image Upload Handler ────────────────────────────────────
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Image too large — max 5 MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('productImage').value = e.target.result;
+                updateImagePreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateImagePreview(src) {
+            const preview = document.getElementById('imagePreview');
+            const img = document.getElementById('imagePreviewImg');
+            if (src) {
+                img.src = src;
+                preview.style.display = 'block';
+                img.onerror = () => { preview.style.display = 'none'; };
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        // ─── Edit Modal ──────────────────────────────────────────────
+        function openAddModal(category) {
+            currentEditId = null;
+            document.getElementById('modalTitle').textContent = `Add ${category === 'scooter' ? 'Electric Scooter' : 'Moped'}`;
+            document.getElementById('productForm').reset();
+            document.getElementById('productCategory').value = category;
+            document.getElementById('imageUpload').value = '';
+            updateImagePreview('');
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function openEditModal(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            currentEditId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Vehicle';
+            document.getElementById('productName').value = p.name;
+            document.getElementById('productCategory').value = p.category;
+            document.getElementById('productDescription').value = p.description || '';
+            document.getElementById('productImage').value = p.image || '';
+            document.getElementById('dailyPrice').value = p.dailyPrice;
+            document.getElementById('weeklyPrice').value = p.weeklyPrice;
+            document.getElementById('imageUpload').value = '';
+            updateImagePreview(p.image || '');
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentEditId = null;
+            updateImagePreview('');
+        }
+
+        function saveProduct() {
+            const name = document.getElementById('productName').value.trim();
+            const category = document.getElementById('productCategory').value;
+            const description = document.getElementById('productDescription').value.trim();
+            const image = document.getElementById('productImage').value.trim();
+            const dailyPrice = parseFloat(document.getElementById('dailyPrice').value) || 0;
+            const weeklyPrice = parseFloat(document.getElementById('weeklyPrice').value) || 0;
+
+            if (!name) { showNotification('Please enter a name'); return; }
+
+            if (currentEditId) {
+                const p = products.find(x => x.id === currentEditId);
+                if (p) {
+                    Object.assign(p, { name, category, description, image, dailyPrice, weeklyPrice });
+                }
+            } else {
+                products.push({
+                    id: Date.now().toString(),
+                    category,
+                    name,
+                    description,
+                    image,
+                    dailyPrice,
+                    weeklyPrice,
+                    available: true,
+                    bookedDates: []
+                });
+            }
+
+            saveProducts();
+            renderAll();
+            closeModal();
+            showNotification(currentEditId ? 'Updated!' : 'Added!');
+        }
+
+        function deleteProduct(id) {
+            if (!confirm('Delete this vehicle?')) return;
+            products = products.filter(p => p.id !== id);
+            saveProducts();
+            renderAll();
+            showNotification('Deleted');
+        }
+
+        // ─── Availability Modal (Admin date management) ─────────────
+        function openAvailabilityModal(id) {
+            currentAvailabilityId = id;
+            const now = new Date();
+            availCalMonth = { year: now.getFullYear(), month: now.getMonth() };
+            renderAvailabilityCalendar();
+            document.getElementById('availabilityModal').classList.add('active');
+        }
+
+        function closeAvailabilityModal() {
+            document.getElementById('availabilityModal').classList.remove('active');
+            currentAvailabilityId = null;
+            renderAll();
+        }
+
+        function renderAvailabilityCalendar() {
+            const container = document.getElementById('availabilityCalendar');
+            const product = products.find(p => p.id === currentAvailabilityId);
+            if (!product) return;
+
+            const { year, month } = availCalMonth;
+            let html = `
+                <div class="cal-header">
+                    <button class="btn btn-secondary" onclick="availCalPrev()" style="padding:0.4rem 0.8rem;">&lt;</button>
+                    <span class="cal-title">${new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+                    <button class="btn btn-secondary" onclick="availCalNext()" style="padding:0.4rem 0.8rem;">&gt;</button>
+                </div>
+                <div class="cal-grid">`;
+
+            ['S','M','T','W','T','F','S'].forEach(d => { html += `<div class="cal-day-label">${d}</div>`; });
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            for (let i = 0; i < firstDay.getDay(); i++) html += '<div class="cal-day empty"></div>';
+
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const dateStr = new Date(year, month, day).toISOString().split('T')[0];
+                const isBooked = product.bookedDates && product.bookedDates.includes(dateStr);
+                html += `<div class="cal-day ${isBooked ? 'booked' : 'available'}" onclick="toggleDateAvail('${dateStr}')" style="cursor:pointer;">${day}</div>`;
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function availCalPrev() {
+            availCalMonth.month--;
+            if (availCalMonth.month < 0) { availCalMonth.month = 11; availCalMonth.year--; }
+            renderAvailabilityCalendar();
+        }
+
+        function availCalNext() {
+            availCalMonth.month++;
+            if (availCalMonth.month > 11) { availCalMonth.month = 0; availCalMonth.year++; }
+            renderAvailabilityCalendar();
+        }
+
+        function toggleDateAvail(dateStr) {
+            const p = products.find(x => x.id === currentAvailabilityId);
+            if (!p) return;
+            if (!p.bookedDates) p.bookedDates = [];
+            const idx = p.bookedDates.indexOf(dateStr);
+            if (idx > -1) p.bookedDates.splice(idx, 1);
+            else p.bookedDates.push(dateStr);
+            saveProducts();
+            renderAvailabilityCalendar();
+        }
+
+        // ─── Booking Modal ───────────────────────────────────────────
+        function openBookingModal(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            bookingVehicleId = id;
+            bookingStartDate = null;
+            bookingEndDate = null;
+            const now = new Date();
+            bookingCalMonth = { year: now.getFullYear(), month: now.getMonth() };
+
+            document.getElementById('bookingModalTitle').textContent = `Rental Agreement — ${p.name}`;
+            document.getElementById('bookingForm').reset();
+            document.getElementById('bookingSignDate').value = now.toISOString().split('T')[0];
+
+            // Hide conditional fields
+            document.getElementById('accidentDetail').style.display = 'none';
+            document.getElementById('restrictionDetail').style.display = 'none';
+            document.getElementById('priceSummary').style.display = 'none';
+
+            updatePaymentTerms();
+            document.getElementById('bookingModal').classList.add('active');
+            renderBookingCalendar();
+            updateDateSummary();
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+            bookingVehicleId = null;
+        }
+
+        function renderBookingCalendar() {
+            const container = document.getElementById('bookingCalendar');
+            const product = products.find(p => p.id === bookingVehicleId);
+            if (!product) return;
+
+            const { year, month } = bookingCalMonth;
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            let html = `
+                <div class="cal-header">
+                    <button type="button" class="btn btn-secondary" onclick="bookingCalPrev()" style="padding:0.4rem 0.8rem;">&lt;</button>
+                    <span class="cal-title">${new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+                    <button type="button" class="btn btn-secondary" onclick="bookingCalNext()" style="padding:0.4rem 0.8rem;">&gt;</button>
+                </div>
+                <div class="cal-grid">`;
+
+            ['S','M','T','W','T','F','S'].forEach(d => { html += `<div class="cal-day-label">${d}</div>`; });
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            for (let i = 0; i < firstDay.getDay(); i++) html += '<div class="cal-day empty"></div>';
+
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(year, month, day);
+                const dateStr = date.toISOString().split('T')[0];
+                const isPast = date < today;
+                const isBooked = product.bookedDates && product.bookedDates.includes(dateStr);
+
+                let cls = 'cal-day';
+                if (isPast) cls += ' past';
+                else if (isBooked) cls += ' booked';
+                else {
+                    cls += ' available';
+                    if (bookingStartDate && dateStr === bookingStartDate) cls += ' selected-start';
+                    else if (bookingEndDate && dateStr === bookingEndDate) cls += ' selected-end';
+                    else if (bookingStartDate && bookingEndDate && dateStr > bookingStartDate && dateStr < bookingEndDate) cls += ' in-range';
+                }
+
+                const clickable = !isPast && !isBooked;
+                html += `<div class="${cls}" ${clickable ? `onclick="selectBookingDate('${dateStr}')"` : ''}>${day}</div>`;
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function bookingCalPrev() {
+            bookingCalMonth.month--;
+            if (bookingCalMonth.month < 0) { bookingCalMonth.month = 11; bookingCalMonth.year--; }
+            renderBookingCalendar();
+        }
+
+        function bookingCalNext() {
+            bookingCalMonth.month++;
+            if (bookingCalMonth.month > 11) { bookingCalMonth.month = 0; bookingCalMonth.year++; }
+            renderBookingCalendar();
+        }
+
+        function selectBookingDate(dateStr) {
+            if (!bookingStartDate || (bookingStartDate && bookingEndDate)) {
+                bookingStartDate = dateStr;
+                bookingEndDate = null;
+            } else {
+                if (dateStr < bookingStartDate) {
+                    bookingEndDate = bookingStartDate;
+                    bookingStartDate = dateStr;
+                } else if (dateStr === bookingStartDate) {
+                    bookingEndDate = dateStr;
+                } else {
+                    bookingEndDate = dateStr;
+                }
+
+                // Check for booked dates in the range
+                const product = products.find(p => p.id === bookingVehicleId);
+                if (product && product.bookedDates) {
+                    const conflict = product.bookedDates.some(d => d >= bookingStartDate && d <= bookingEndDate);
+                    if (conflict) {
+                        showNotification('Selected range contains booked dates — please choose different dates');
+                        bookingStartDate = null;
+                        bookingEndDate = null;
+                    }
+                }
+            }
+            renderBookingCalendar();
+            updateDateSummary();
+        }
+
+        function updateDateSummary() {
+            const el = document.getElementById('dateSummary');
+            const priceBox = document.getElementById('priceSummary');
+            if (!bookingStartDate) {
+                el.innerHTML = 'No dates selected';
+                priceBox.style.display = 'none';
+                updatePaymentTerms();
+                return;
+            }
+            if (!bookingEndDate) {
+                el.innerHTML = `<strong>Start:</strong> ${formatDate(bookingStartDate)} — now pick an end date`;
+                priceBox.style.display = 'none';
+                updatePaymentTerms();
+                return;
+            }
+            const days = daysBetween(bookingStartDate, bookingEndDate);
+            el.innerHTML = `<strong>${formatDate(bookingStartDate)}</strong> to <strong>${formatDate(bookingEndDate)}</strong> — <strong>${days} day${days !== 1 ? 's' : ''}</strong>`;
+
+            const product = products.find(p => p.id === bookingVehicleId);
+            if (!product) return;
+
+            const pricing = calculatePricing(days, product.dailyPrice, product.weeklyPrice);
+            let priceHtml = '';
+            if (pricing.weeks > 0) {
+                priceHtml += `<div class="price-summary-row"><span>${pricing.weeks} week${pricing.weeks > 1 ? 's' : ''} × $${product.weeklyPrice}</span><span>$${pricing.weeks * product.weeklyPrice}</span></div>`;
+            }
+            if (pricing.extraDays > 0) {
+                priceHtml += `<div class="price-summary-row"><span>${pricing.extraDays} day${pricing.extraDays > 1 ? 's' : ''} × $${product.dailyPrice}</span><span>$${pricing.extraDays * product.dailyPrice}</span></div>`;
+            }
+            priceHtml += `<div class="price-summary-row"><span>Bond (refundable)</span><span>$250</span></div>`;
+            priceHtml += `<div class="price-summary-row total"><span>Total</span><span>$${pricing.rental + 250}</span></div>`;
+            priceHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;">Rental: $${pricing.rental} + $250 bond</div>`;
+            priceBox.innerHTML = priceHtml;
+            priceBox.style.display = 'block';
+            updatePaymentTerms();
+        }
+
+        function calculatePricing(days, dailyRate, weeklyRate) {
+            const weeks = Math.floor(days / 7);
+            const extraDays = days % 7;
+            const rental = weeks * weeklyRate + extraDays * dailyRate;
+            return { weeks, extraDays, rental };
+        }
+
+        function updatePaymentTerms() {
+            const product = products.find(p => p.id === bookingVehicleId);
+            if (!product) return;
+            const hasDates = bookingStartDate && bookingEndDate;
+            const days = hasDates ? daysBetween(bookingStartDate, bookingEndDate) : 0;
+            const pricing = hasDates ? calculatePricing(days, product.dailyPrice, product.weeklyPrice) : null;
+
+            const weeklyStr = `$${product.weeklyPrice} AUD per week`;
+            const rentalStr = pricing ? `<strong>$${pricing.rental} AUD</strong> for ${days} day${days !== 1 ? 's' : ''}` : weeklyStr;
+
+            document.getElementById('paymentTerms').innerHTML =
+                `I agree to pay a rental fee of ${rentalStr} for use of the scooter, plus a <strong>$250 AUD</strong> one-time refundable bond.<br><br>` +
+                `The rental period begins on the date the scooter is handed over to me and continues until the scooter is returned. ` +
+                `The rental fee can be <strong>paid in weekly instalments</strong> at <strong>${weeklyStr}</strong> (or <strong>$${product.dailyPrice} AUD per day</strong> for partial weeks) and will continue each week unless the scooter is returned.`;
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+
+        function daysBetween(start, end) {
+            const a = new Date(start + 'T00:00:00');
+            const b = new Date(end + 'T00:00:00');
+            return Math.max(1, Math.round((b - a) / 86400000) + 1);
+        }
+
+        // ─── Submit Booking ──────────────────────────────────────────
+        async function submitBooking() {
+            const name = document.getElementById('bookingName').value.trim();
+            const dob = document.getElementById('bookingDOB').value;
+            const email = document.getElementById('bookingEmail').value.trim();
+            const phone = document.getElementById('bookingPhone').value.trim();
+            const address = document.getElementById('bookingAddress').value.trim();
+            const licCountry = document.getElementById('bookingLicCountry').value.trim();
+            const licNumber = document.getElementById('bookingLicNumber').value.trim();
+            const licType = document.querySelector('input[name="licType"]:checked');
+            const lic12m = document.getElementById('bookingLic12m').value;
+            const licExpiry = document.getElementById('bookingLicExpiry').value;
+            const accidents = document.getElementById('bookingAccidents').value;
+            const accidentInfo = document.getElementById('bookingAccidentInfo').value.trim();
+            const restrictions = document.getElementById('bookingRestrictions').value;
+            const restrictionInfo = document.getElementById('bookingRestrictionInfo').value.trim();
+            const signature = document.getElementById('bookingSignature').value.trim();
+            const signDate = document.getElementById('bookingSignDate').value;
+
+            if (!name || !dob || !email || !phone) {
+                showNotification('Please fill in all required renter details');
+                return;
+            }
+            if (!licNumber || !licType || !lic12m) {
+                showNotification('Please complete the licence details');
+                return;
+            }
+            if (!accidents || !restrictions) {
+                showNotification('Please complete the driving history section');
+                return;
+            }
+            if (!bookingStartDate || !bookingEndDate) {
+                showNotification('Please select rental dates');
+                return;
+            }
+
+            const requiredChecks = ['agreePayment','agreeReturn','agreeMissed','declareTrue','declareLicence','declareFalse','declareDamage','declareRide','agreeBinding'];
+            const unchecked = requiredChecks.find(id => !document.getElementById(id).checked);
+            if (unchecked) {
+                showNotification('Please agree to all declarations before submitting');
+                return;
+            }
+            if (!signature) {
+                showNotification('Please provide your digital signature');
+                return;
+            }
+
+            const product = products.find(p => p.id === bookingVehicleId);
+            if (!product) return;
+
+            const numDays = daysBetween(bookingStartDate, bookingEndDate);
+            const pricing = calculatePricing(numDays, product.dailyPrice, product.weeklyPrice);
+
+            const btn = document.getElementById('submitBookingBtn');
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            const templateParams = {
+                vehicle_name: product.name,
+                vehicle_category: product.category === 'scooter' ? 'Electric Scooter' : 'Moped',
+                customer_name: name,
+                customer_dob: dob,
+                customer_email: email,
+                customer_phone: phone,
+                customer_address: address || 'Not provided',
+                licence_country: licCountry || 'Not provided',
+                licence_number: licNumber,
+                licence_type: licType.value,
+                licence_expiry: licExpiry || 'Not provided',
+                licence_12_months: lic12m,
+                at_fault_accidents: accidents,
+                accident_details: accidentInfo || 'N/A',
+                driving_restrictions: restrictions,
+                restriction_details: restrictionInfo || 'N/A',
+                start_date: formatDate(bookingStartDate),
+                end_date: formatDate(bookingEndDate),
+                num_days: numDays,
+                rental_cost: `$${pricing.rental}`,
+                bond: '$250',
+                total_cost: `$${pricing.rental + 250}`,
+                digital_signature: signature,
+                date_signed: signDate,
+                rental_form_completed: 'Yes (submitted via website)'
+            };
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+                showNotification('Rental agreement submitted! We\'ll be in touch soon.');
+                closeBookingModal();
+            } catch (err) {
+                console.error('EmailJS error:', err);
+                showNotification('Could not send — please call us instead!');
+            } finally {
+                btn.textContent = 'Submit Rental Agreement';
+                btn.disabled = false;
+            }
+        }
+
+        // ─── Notifications ───────────────────────────────────────────
+        function showNotification(message) {
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.textContent = message;
+            document.body.appendChild(n);
+            setTimeout(() => {
+                n.style.animation = 'slideUp 0.3s ease-out reverse forwards';
+                setTimeout(() => n.remove(), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
