@@ -233,9 +233,8 @@
             bottom: -2px;
             left: 0;
             width: 100%;
-            height: 60px;
-            background: var(--bg-primary);
-            clip-path: ellipse(55% 100% at 50% 100%);
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange), var(--accent-gold));
             z-index: 2;
         }
 
@@ -1016,34 +1015,35 @@
 
         /* Features strip */
         .features-strip {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1px;
+            display: flex;
             background: var(--border);
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
+            gap: 1px;
         }
 
         .feature-item {
             background: var(--bg-secondary);
-            padding: 1.5rem;
+            padding: 1.25rem 0.5rem;
             text-align: center;
+            flex: 1 1 0;
+            min-width: 0;
         }
 
         .feature-icon {
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.35rem;
         }
 
         .feature-title {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-primary);
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.15rem;
         }
 
         .feature-desc {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
 
@@ -1133,14 +1133,26 @@
         }
 
         /* Responsive */
+        @media (max-width: 768px) {
+            .feature-item { padding: 0.9rem 0.25rem; }
+            .feature-icon { font-size: 1.2rem; margin-bottom: 0.25rem; }
+            .feature-title { font-size: 0.7rem; }
+            .feature-desc { display: none; }
+            .steps { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 600px) {
             .products-grid {
                 grid-template-columns: 1fr;
             }
-            .hero { padding: 2rem 1.5rem 3rem; }
+            .hero { padding: 2rem 1.5rem 2.5rem; }
             main { padding: 1.5rem 1rem 3rem; }
             .form-row { grid-template-columns: 1fr; }
             .gallery-img { height: 260px; }
+            .feature-item { padding: 0.75rem 0.2rem; }
+            .feature-icon { font-size: 1.1rem; }
+            .feature-title { font-size: 0.65rem; }
+            .contact-bar { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1186,26 +1198,6 @@
     </section>
 
     <main>
-        <!-- SEO intro -->
-        <section class="section" style="text-align:center; max-width:750px; margin:0 auto 1rem;">
-            <h2 style="font-family:'Fraunces',serif; font-size:1.5rem; margin-bottom:0.75rem;">Affordable Scooter &amp; Moped Hire in Airlie Beach</h2>
-            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.95rem; margin-bottom:0.75rem;">Looking for a fun, affordable way to explore Airlie Beach and the Whitsundays? <strong>Airlie Scooter Hire</strong> is your local go-to for <strong>cheap scooter hire in Airlie Beach</strong> — with electric scooters from just $30/day and 50cc mopeds from $45/day. No motorcycle licence needed, just a regular car licence.</p>
-            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.95rem; margin-bottom:0.75rem;">Whether you're here for a weekend getaway or a longer Whitsundays adventure, our <strong>moped rental in Airlie Beach</strong> is the easiest way to get around. Helmets are included, we deliver to your door, and booking takes just a few minutes online. Flexible weekly instalment payments available for longer rentals.</p>
-            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.95rem;">Skip the taxis, ditch the bus timetable, and ride on your own schedule. Our scooters are automatic, super easy to ride, and cost next to nothing to run. It's the way the locals do it.</p>
-        </section>
-
-        <!-- Key benefits -->
-        <section class="section" style="max-width:650px; margin:0 auto 1rem;">
-            <h2 style="font-family:'Fraunces',serif; font-size:1.25rem; text-align:center; margin-bottom:1rem;">Why Hire a Scooter With Us?</h2>
-            <ul style="list-style:none; padding:0; display:grid; gap:0.6rem;">
-                <li style="background:var(--bg-secondary); padding:0.75rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.95rem;"><span style="font-size:1.2rem;">💰</span> <strong>Cheap scooter hire in Airlie Beach</strong> — from $30/day</li>
-                <li style="background:var(--bg-secondary); padding:0.75rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.95rem;"><span style="font-size:1.2rem;">🪪</span> 50cc mopeds — drive with a regular car licence</li>
-                <li style="background:var(--bg-secondary); padding:0.75rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.95rem;"><span style="font-size:1.2rem;">🪖</span> Helmets included with every rental</li>
-                <li style="background:var(--bg-secondary); padding:0.75rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.95rem;"><span style="font-size:1.2rem;">⚡</span> Easy online booking with fast approval</li>
-                <li style="background:var(--bg-secondary); padding:0.75rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.95rem;"><span style="font-size:1.2rem;">📍</span> Free pickup and drop-off in Airlie Beach</li>
-            </ul>
-        </section>
-
         <!-- Mopeds Section -->
         <section class="section">
             <div class="section-header">
@@ -1228,6 +1220,25 @@
                 </div>
             </div>
             <div class="products-grid" id="scootersGrid"></div>
+        </section>
+
+        <!-- About / SEO content -->
+        <section class="section" style="text-align:center; max-width:750px; margin:0 auto;">
+            <h2 style="font-family:'Fraunces',serif; font-size:1.35rem; margin-bottom:0.75rem;">Affordable Scooter &amp; Moped Hire in Airlie Beach</h2>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem; margin-bottom:0.6rem;">Looking for a fun, affordable way to explore Airlie Beach and the Whitsundays? <strong>Airlie Scooter Hire</strong> is your local go-to for <strong>cheap scooter hire in Airlie Beach</strong> — with electric scooters from just $30/day and 50cc mopeds from $45/day. No motorcycle licence needed, just a regular car licence.</p>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem; margin-bottom:0.6rem;">Whether you're here for a weekend getaway or a longer Whitsundays adventure, our <strong>moped rental in Airlie Beach</strong> is the easiest way to get around. Helmets included, delivery to your door, and booking takes just a few minutes online.</p>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem;">Skip the taxis, ditch the bus timetable, and ride on your own schedule. Our scooters are automatic, super easy to ride, and cost next to nothing to run.</p>
+        </section>
+
+        <!-- Key benefits -->
+        <section class="section" style="max-width:600px; margin:0 auto;">
+            <ul style="list-style:none; padding:0; display:grid; gap:0.5rem;">
+                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">💰</span> <strong>Cheap scooter hire in Airlie Beach</strong> — from $30/day</li>
+                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">🪪</span> 50cc mopeds — drive with a regular car licence</li>
+                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">🪖</span> Helmets included with every rental</li>
+                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">⚡</span> Easy online booking with fast approval</li>
+                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">📍</span> Free pickup and drop-off in Airlie Beach</li>
+            </ul>
         </section>
 
         <!-- How It Works -->
