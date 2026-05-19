@@ -147,6 +147,34 @@
             {
                 "@type": "Product",
                 "position": 4,
+                "name": "Kymco Super 8 50cc Moped Rental",
+                "description": "Sporty 50cc moped with bold styling and automatic transmission. Helmets included. Car licence OK. Free delivery in Airlie Beach.",
+                "image": "Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png",
+                "offers": {
+                    "@type": "Offer",
+                    "priceCurrency": "AUD",
+                    "price": "45",
+                    "unitCode": "DAY",
+                    "availability": "https://schema.org/InStock"
+                }
+            },
+            {
+                "@type": "Product",
+                "position": 5,
+                "name": "Kymco Agility 50cc Moped Rental",
+                "description": "Lightweight and agile 50cc moped, perfect for exploring Airlie Beach. Helmets included. Car licence OK. Free delivery.",
+                "image": "Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png",
+                "offers": {
+                    "@type": "Offer",
+                    "priceCurrency": "AUD",
+                    "price": "45",
+                    "unitCode": "DAY",
+                    "availability": "https://schema.org/InStock"
+                }
+            },
+            {
+                "@type": "Product",
+                "position": 6,
                 "name": "Ninebot F2 Pro Electric Scooter Rental",
                 "description": "Powerful electric kick scooter with LED display, foldable design, and long-range battery. Zero emissions.",
                 "image": "Static/Ninebot F2 Pro Scooter/ChatGPT Image Apr 3, 2026, 10_20_25 PM.png",
@@ -1480,6 +1508,16 @@
                 <p>Stylish 50cc moped for cruising the Whitsunday coast. Helmets included. $45/day, $250/week. Car licence OK. Free delivery in Airlie Beach.</p>
                 <img src="Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png" alt="SYM Mio 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
             </article>
+            <article>
+                <h4>Kymco Super 8 50cc — Moped Rental Airlie Beach</h4>
+                <p>Sporty 50cc moped with bold styling and easy automatic transmission. Helmets included. $45/day, $250/week. Car licence OK. Free delivery in Airlie Beach.</p>
+                <img src="Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png" alt="Kymco Super 8 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
+            </article>
+            <article>
+                <h4>Kymco Agility 50cc — Moped Rental Airlie Beach</h4>
+                <p>Lightweight and agile 50cc moped, perfect for exploring Airlie Beach. Helmets included. $45/day, $250/week. Car licence OK. Free delivery in Airlie Beach.</p>
+                <img src="Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png" alt="Kymco Agility 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
+            </article>
 
             <h3>Electric Scooter Hire Airlie Beach</h3>
             <article>
@@ -1894,7 +1932,7 @@
 
         // ─── Data ────────────────────────────────────────────────────
         function loadProducts() {
-            const stored = localStorage.getItem('scootWhitsundaysProducts_v5');
+            const stored = localStorage.getItem('scootWhitsundaysProducts_v6');
             if (stored) {
                 products = JSON.parse(stored);
             } else {
@@ -1966,6 +2004,34 @@
                         weeklyPrice: 250,
                         available: true,
                         bookedDates: []
+                    },
+                    {
+                        id: '4',
+                        category: 'moped',
+                        name: 'Kymco Super 8 50cc',
+                        description: 'Sporty and reliable 50cc moped with a bold look. Easy automatic transmission, great for getting around Airlie Beach. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                        image: 'Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png',
+                        gallery: [
+                            'Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png'
+                        ],
+                        dailyPrice: 45,
+                        weeklyPrice: 250,
+                        available: true,
+                        bookedDates: []
+                    },
+                    {
+                        id: '5',
+                        category: 'moped',
+                        name: 'Kymco Agility 50cc',
+                        description: 'Lightweight and agile 50cc moped built for easy riding. Smooth handling around town, perfect for exploring the Whitsundays. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                        image: 'Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png',
+                        gallery: [
+                            'Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png'
+                        ],
+                        dailyPrice: 45,
+                        weeklyPrice: 250,
+                        available: true,
+                        bookedDates: []
                     }
                 ];
                 saveProducts();
@@ -1973,7 +2039,7 @@
         }
 
         function saveProducts() {
-            localStorage.setItem('scootWhitsundaysProducts_v5', JSON.stringify(products));
+            localStorage.setItem('scootWhitsundaysProducts_v6', JSON.stringify(products));
         }
 
         // ─── Render ──────────────────────────────────────────────────
