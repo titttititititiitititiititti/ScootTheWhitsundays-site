@@ -364,6 +364,7 @@
         }
 
         .admin-badge.active { display: block; }
+        .tier-btn.active { background: var(--accent-red) !important; color: #fff !important; border-color: var(--accent-red) !important; }
 
         @keyframes pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.4); }
@@ -1265,6 +1266,18 @@
 
     <div class="admin-badge" id="adminBadge">Admin Mode</div>
 
+    <!-- Admin: Pricing Tier Control -->
+    <div id="pricingTierControl" style="display:none; position:fixed; top:3.5rem; right:1rem; z-index:1000; background:var(--bg-secondary); border:2px solid var(--accent-red); border-radius:12px; padding:1rem; box-shadow:0 4px 20px rgba(0,0,0,0.15); max-width:320px; font-size:0.85rem;">
+        <div style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);">Pricing Tier</div>
+        <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem;">
+            <button class="tier-btn" data-tier="low" onclick="setPricingTier('low')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">Low</button>
+            <button class="tier-btn" data-tier="medium" onclick="setPricingTier('medium')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">Med</button>
+            <button class="tier-btn" data-tier="high" onclick="setPricingTier('high')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">High</button>
+            <button class="tier-btn" data-tier="peak" onclick="setPricingTier('peak')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">Peak</button>
+        </div>
+        <div id="tierInfo" style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;"></div>
+    </div>
+
     <header class="hero">
         <img src="Static/hero.png" alt="Three scooters at sunset on Airlie Beach" class="hero-bg-image">
         <div class="hero-content">
@@ -1978,10 +1991,21 @@
         let bookingEndDate = null;
         let bookingVehicleId = null;
 
+        // Pricing tiers: each tier defines a multiplier applied to base prices
+        const PRICING_TIERS = {
+            low:    { label: 'Low Demand',    mopedDaily: 30, mopedWeekly: 170, scooterDaily: 30, scooterWeekly: 120 },
+            medium: { label: 'Medium Demand',  mopedDaily: 35, mopedWeekly: 200, scooterDaily: 30, scooterWeekly: 120 },
+            high:   { label: 'High Demand',    mopedDaily: 45, mopedWeekly: 250, scooterDaily: 35, scooterWeekly: 140 },
+            peak:   { label: 'Peak Demand',    mopedDaily: 55, mopedWeekly: 300, scooterDaily: 40, scooterWeekly: 160 }
+        };
+        let currentTier = localStorage.getItem('scootPricingTier') || 'low';
+
         // ─── Init ────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
             loadProducts();
+            applyPricingTier();
             renderAll();
+            updateTierUI();
             setupKeyListener();
 
             const imgInput = document.getElementById('productImage');
@@ -2007,13 +2031,46 @@
         function toggleAdminMode() {
             isAdmin = !isAdmin;
             document.getElementById('adminBadge').classList.toggle('active', isAdmin);
+            document.getElementById('pricingTierControl').style.display = isAdmin ? 'block' : 'none';
             renderAll();
             showNotification(isAdmin ? 'Admin mode activated' : 'Admin mode deactivated');
         }
 
+        function applyPricingTier() {
+            const tier = PRICING_TIERS[currentTier];
+            products.forEach(p => {
+                if (p.category === 'moped') {
+                    p.dailyPrice = tier.mopedDaily;
+                    p.weeklyPrice = tier.mopedWeekly;
+                } else if (p.category === 'scooter') {
+                    p.dailyPrice = tier.scooterDaily;
+                    p.weeklyPrice = tier.scooterWeekly;
+                }
+            });
+            saveProducts();
+        }
+
+        function setPricingTier(tier) {
+            currentTier = tier;
+            localStorage.setItem('scootPricingTier', tier);
+            applyPricingTier();
+            renderAll();
+            updateTierUI();
+            showNotification(`Pricing set to ${PRICING_TIERS[tier].label}: Mopeds $${PRICING_TIERS[tier].mopedDaily}/day, Scooters $${PRICING_TIERS[tier].scooterDaily}/day`);
+        }
+
+        function updateTierUI() {
+            document.querySelectorAll('.tier-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tier === currentTier);
+            });
+            const tier = PRICING_TIERS[currentTier];
+            const info = document.getElementById('tierInfo');
+            if (info) info.textContent = `Current: ${tier.label} — Mopeds $${tier.mopedDaily}/day ($${tier.mopedWeekly}/wk) · Scooters $${tier.scooterDaily}/day ($${tier.scooterWeekly}/wk)`;
+        }
+
         // ─── Data ────────────────────────────────────────────────────
         function loadProducts() {
-            const stored = localStorage.getItem('scootWhitsundaysProducts_v6');
+            const stored = localStorage.getItem('scootWhitsundaysProducts_v7');
             if (stored) {
                 products = JSON.parse(stored);
             } else {
@@ -2120,7 +2177,7 @@
         }
 
         function saveProducts() {
-            localStorage.setItem('scootWhitsundaysProducts_v6', JSON.stringify(products));
+            localStorage.setItem('scootWhitsundaysProducts_v7', JSON.stringify(products));
         }
 
         // ─── Render ──────────────────────────────────────────────────
@@ -2545,6 +2602,11 @@
             btn.disabled = true;
 
             const templateParams = {
+                title: 'Long-Term Rental Enquiry',
+                name: name,
+                time: new Date().toLocaleString('en-AU'),
+                email: email,
+                message: message,
                 vehicle_name: 'Long-Term Rental Enquiry',
                 vehicle_category: 'Long-Term',
                 customer_name: name,
@@ -2571,8 +2633,7 @@
                 digital_signature: 'N/A',
                 date_signed: 'N/A',
                 rental_form_completed: 'No — long-term enquiry only',
-                confirm_link: '',
-                message: message
+                confirm_link: ''
             };
 
             try {
@@ -2819,6 +2880,11 @@
             const confirmLink = `mailto:${email}?subject=${confirmSubject}&body=${confirmBody}`;
 
             const templateParams = {
+                title: `New Rental Agreement — ${product.name}`,
+                name: name,
+                time: new Date().toLocaleString('en-AU'),
+                email: email,
+                message: '',
                 vehicle_name: product.name,
                 vehicle_category: product.category === 'scooter' ? 'Electric Scooter' : 'Moped',
                 customer_name: name,
