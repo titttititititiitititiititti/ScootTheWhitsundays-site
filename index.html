@@ -9,8 +9,9 @@
     <meta name="author" content="Airlie Scooter Hire">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://airliescooterhire.com/">
-    <link rel="icon" type="image/png" href="Static/favicon.png">
-    <link rel="apple-touch-icon" href="Static/favicon.png">
+    <link rel="icon" type="image/x-icon" href="Static/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="Static/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Static/favicon-180.png">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -1340,7 +1341,7 @@
                 <h3 style="font-family:'Fraunces',serif; font-size:1.4rem; color:var(--text-primary); margin-bottom:0.5rem;">From just $140 – $170 per week</h3>
                 <p style="color:var(--text-secondary); font-size:0.95rem; line-height:1.7; margin-bottom:0.75rem;">Rent any of our 50cc mopeds for <strong>3 weeks or more</strong> and get our best long-term rates. That's as low as <strong>$20 per day</strong> — the cheapest long-term moped rental in Airlie Beach.</p>
                 <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7; margin-bottom:1.25rem;">Perfect for seasonal workers, backpackers, or anyone staying in the Whitsundays for an extended trip. All mopeds are 50cc so you only need a <strong>regular car licence</strong>. Free pickup and drop-off included, flexible weekly payments available.</p>
-                <a href="mailto:scootthewhitsundays@gmail.com?subject=Long-Term Rental Inquiry&body=Hi, I'm interested in a long-term moped rental in Airlie Beach.%0A%0AHow long I need it: %0APreferred moped: %0AMy name: %0AMy phone number: " class="btn btn-primary" style="display:inline-block; text-decoration:none; font-size:1rem; padding:0.85rem 2rem;">Enquire About Long-Term Rates</a>
+                <button class="btn btn-primary" onclick="openLongTermModal()" style="font-size:1rem; padding:0.85rem 2rem;">Enquire About Long-Term Rates</button>
             </div>
         </section>
 
@@ -1572,6 +1573,42 @@
     <footer style="background: #2c1810; color: rgba(255,255,255,0.6);">
         <p>&copy; 2026 Airlie Scooter Hire. All rights reserved.</p>
     </footer>
+
+    <!-- Long-Term Inquiry Modal -->
+    <div class="modal-overlay" id="longTermModal">
+        <div class="modal" style="max-width:500px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Long-Term Rental Enquiry</h3>
+                <button class="modal-close" onclick="closeLongTermModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">Tell us what you need and we'll get back to you with a quote. Long-term rates start from $140–$170/week for 3+ weeks.</p>
+                <form id="longTermForm">
+                    <div class="form-group">
+                        <label class="form-label">Your Name *</label>
+                        <input type="text" class="form-input" id="ltName" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-input" id="ltEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone *</label>
+                            <input type="tel" class="form-input" id="ltPhone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Message *</label>
+                        <textarea class="form-input" id="ltMessage" rows="5" required placeholder="e.g. I'm looking for a moped for 4 weeks starting mid-August. I'm a seasonal worker staying at..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="padding:0 2rem 1.5rem;">
+                <button class="btn btn-primary" onclick="submitLongTermInquiry()" id="ltSubmitBtn" style="width:100%;">Send Enquiry</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Edit/Add Modal -->
     <div class="modal-overlay" id="editModal">
@@ -2480,6 +2517,75 @@
         function closeBookingModal() {
             document.getElementById('bookingModal').classList.remove('active');
             bookingVehicleId = null;
+        }
+
+        // ─── Long-Term Inquiry ─────────────────────────────────────────
+        function openLongTermModal() {
+            document.getElementById('longTermForm').reset();
+            document.getElementById('longTermModal').classList.add('active');
+        }
+
+        function closeLongTermModal() {
+            document.getElementById('longTermModal').classList.remove('active');
+        }
+
+        async function submitLongTermInquiry() {
+            const name = document.getElementById('ltName').value.trim();
+            const email = document.getElementById('ltEmail').value.trim();
+            const phone = document.getElementById('ltPhone').value.trim();
+            const message = document.getElementById('ltMessage').value.trim();
+
+            if (!name || !email || !phone || !message) {
+                showNotification('Please fill in all fields');
+                return;
+            }
+
+            const btn = document.getElementById('ltSubmitBtn');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            const templateParams = {
+                vehicle_name: 'Long-Term Rental Enquiry',
+                vehicle_category: 'Long-Term',
+                customer_name: name,
+                customer_dob: 'N/A',
+                customer_email: email,
+                customer_phone: phone,
+                customer_address: 'N/A',
+                number_of_riders: 'N/A',
+                licence_country: 'N/A',
+                licence_number: 'N/A',
+                licence_type: 'N/A',
+                licence_expiry: 'N/A',
+                licence_12_months: 'N/A',
+                at_fault_accidents: 'N/A',
+                accident_details: 'N/A',
+                driving_restrictions: 'N/A',
+                restriction_details: 'N/A',
+                start_date: 'N/A',
+                end_date: 'N/A',
+                num_days: 'Long-term (3+ weeks)',
+                rental_cost: '$140–$170/week',
+                bond: 'TBC',
+                total_cost: 'TBC',
+                digital_signature: 'N/A',
+                date_signed: 'N/A',
+                rental_form_completed: 'No — long-term enquiry only',
+                confirm_link: '',
+                message: message
+            };
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+                showNotification('Enquiry sent! We\'ll get back to you soon.');
+                closeLongTermModal();
+            } catch (err) {
+                console.error('EmailJS error:', err);
+                showNotification('Could not send — please call us instead!');
+            } finally {
+                btn.textContent = 'Send Enquiry';
+                btn.disabled = false;
+            }
         }
 
         function renderBookingCalendar() {
