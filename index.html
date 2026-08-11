@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airlie Scooter Hire – Cheapest Moped & Scooter Rental in Airlie Beach</title>
-    <meta name="description" content="Cheapest scooter hire in Airlie Beach from $30/day. 50cc mopeds on a car licence. Free delivery. Long-term rentals from $140/week for 3+ weeks.">
-    <meta name="keywords" content="airlie scooter hire, scooter hire airlie beach, moped rental airlie beach, electric scooter hire airlie beach, cheap scooter hire airlie beach, long term moped rental airlie beach, 50cc moped hire, Whitsundays scooter rental">
+    <title>Airlie Scooter Hire – Cheapest 50cc Moped Rental in Airlie Beach</title>
+    <meta name="description" content="Cheap moped hire in Airlie Beach from $45/day. 50cc mopeds on a car licence. Free delivery. Long-term rentals from $140/week for 3+ weeks.">
+    <meta name="keywords" content="airlie scooter hire, scooter hire airlie beach, moped rental airlie beach, cheap scooter hire airlie beach, long term moped rental airlie beach, 50cc moped hire, Whitsundays scooter rental">
     <meta name="author" content="Airlie Scooter Hire">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://airliescooterhire.com/">
@@ -15,8 +15,8 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Airlie Scooter Hire – Moped & Electric Scooter Rentals in Airlie Beach">
-    <meta property="og:description" content="Cheap scooter hire in Airlie Beach from $30/day. 50cc mopeds, electric scooters, helmets included. No motorcycle licence needed.">
+    <meta property="og:title" content="Airlie Scooter Hire – 50cc Moped Rentals in Airlie Beach">
+    <meta property="og:description" content="Cheap moped hire in Airlie Beach from $45/day. 50cc mopeds, helmets included. No motorcycle licence needed.">
     <meta property="og:image" content="Static/hero.png">
     <meta property="og:url" content="https://airliescooterhire.com/">
     <meta property="og:locale" content="en_AU">
@@ -24,8 +24,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Airlie Scooter Hire – Moped & Electric Scooter Rentals in Airlie Beach">
-    <meta name="twitter:description" content="Cheap scooter hire in Airlie Beach from $30/day. 50cc mopeds, electric scooters, helmets included. Book online!">
+    <meta name="twitter:title" content="Airlie Scooter Hire – 50cc Moped Rentals in Airlie Beach">
+    <meta name="twitter:description" content="Cheap moped hire in Airlie Beach from $45/day. 50cc mopeds, helmets included. Book online!">
     <meta name="twitter:image" content="Static/hero.png">
 
     <!-- Geo tags for local SEO -->
@@ -36,6 +36,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- Google reCAPTCHA (spam protection for the enquiry forms). Harmless if no site key is configured. -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Structured Data: LocalBusiness -->
     <script type="application/ld+json">
@@ -58,7 +60,7 @@
             "latitude": -20.2686,
             "longitude": 148.7181
         },
-        "priceRange": "$30-$70 per day",
+        "priceRange": "$20-$55 per day",
         "openingHoursSpecification": {
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
@@ -90,7 +92,7 @@
                 "@type": "Review",
                 "author": { "@type": "Person", "name": "Chris L." },
                 "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-                "reviewBody": "$30 a day is unbeatable. Free delivery and pickup. Would 100% recommend to anyone visiting Airlie Beach."
+                "reviewBody": "$45 a day is unbeatable. Free delivery and pickup. Would 100% recommend to anyone visiting Airlie Beach."
             }
         ]
     }
@@ -169,20 +171,6 @@
                     "@type": "Offer",
                     "priceCurrency": "AUD",
                     "price": "45",
-                    "unitCode": "DAY",
-                    "availability": "https://schema.org/InStock"
-                }
-            },
-            {
-                "@type": "Product",
-                "position": 6,
-                "name": "Ninebot F2 Pro Electric Scooter Rental",
-                "description": "Powerful electric kick scooter with LED display, foldable design, and long-range battery. Zero emissions.",
-                "image": "Static/Ninebot F2 Pro Scooter/ChatGPT Image Apr 3, 2026, 10_20_25 PM.png",
-                "offers": {
-                    "@type": "Offer",
-                    "priceCurrency": "AUD",
-                    "price": "30",
                     "unitCode": "DAY",
                     "availability": "https://schema.org/InStock"
                 }
@@ -1264,20 +1252,6 @@
 </head>
 <body>
 
-    <div class="admin-badge" id="adminBadge">Admin Mode</div>
-
-    <!-- Admin: Pricing Tier Control -->
-    <div id="pricingTierControl" style="display:none; position:fixed; top:3.5rem; right:1rem; z-index:1000; background:var(--bg-secondary); border:2px solid var(--accent-red); border-radius:12px; padding:1rem; box-shadow:0 4px 20px rgba(0,0,0,0.15); max-width:320px; font-size:0.85rem;">
-        <div style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);">Pricing Tier</div>
-        <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem;">
-            <button class="tier-btn" data-tier="low" onclick="setPricingTier('low')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">Low</button>
-            <button class="tier-btn" data-tier="medium" onclick="setPricingTier('medium')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">Med</button>
-            <button class="tier-btn" data-tier="high" onclick="setPricingTier('high')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">High</button>
-            <button class="tier-btn" data-tier="peak" onclick="setPricingTier('peak')" style="flex:1; padding:0.4rem; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); cursor:pointer; font-size:0.75rem; font-weight:600;">Peak</button>
-        </div>
-        <div id="tierInfo" style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;"></div>
-    </div>
-
     <header class="hero">
         <img src="Static/hero.png" alt="Three scooters at sunset on Airlie Beach" class="hero-bg-image">
         <div class="hero-content">
@@ -1297,7 +1271,7 @@
         <div class="feature-item">
             <div class="feature-icon">💰</div>
             <div class="feature-title">Cheapest in Airlie</div>
-            <div class="feature-desc">From just $30/day</div>
+            <div class="feature-desc">From just $45/day</div>
         </div>
         <div class="feature-item">
             <div class="feature-icon">📍</div>
@@ -1329,18 +1303,6 @@
             <div class="products-grid" id="mopedsGrid"></div>
         </section>
 
-        <!-- Electric Scooters Section -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon scooter">⚡</div>
-                <div>
-                    <h2 class="section-title">Electric Scooters</h2>
-                    <p class="section-subtitle">Zip around town emission-free</p>
-                </div>
-            </div>
-            <div class="products-grid" id="scootersGrid"></div>
-        </section>
-
         <!-- Long-Term Rentals -->
         <section class="section">
             <div class="section-header">
@@ -1361,7 +1323,7 @@
         <!-- About / SEO content -->
         <section class="section" style="text-align:center; max-width:750px; margin:0 auto;">
             <h2 style="font-family:'Fraunces',serif; font-size:1.35rem; margin-bottom:0.75rem;">Affordable Scooter &amp; Moped Hire in Airlie Beach</h2>
-            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem; margin-bottom:0.6rem;">Looking for a fun, affordable way to explore Airlie Beach and the Whitsundays? <strong>Airlie Scooter Hire</strong> is your local go-to for <strong>cheap scooter hire in Airlie Beach</strong> — with electric scooters from just $30/day and 50cc mopeds from $45/day. No motorcycle licence needed, just a regular car licence.</p>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem; margin-bottom:0.6rem;">Looking for a fun, affordable way to explore Airlie Beach and the Whitsundays? <strong>Airlie Scooter Hire</strong> is your local go-to for <strong>cheap scooter hire in Airlie Beach</strong> — with 50cc mopeds from just $45/day. No motorcycle licence needed, just a regular car licence.</p>
             <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem; margin-bottom:0.6rem;">Whether you're here for a weekend getaway or a longer Whitsundays adventure, our <strong>moped rental in Airlie Beach</strong> is the easiest way to get around. Helmets included, free delivery to your door, and booking takes just a few minutes online.</p>
             <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem;">Need a scooter for longer? We offer <strong>long-term moped rental from just $140–$170 per week</strong> for stays of 3 weeks or more — perfect for seasonal workers and backpackers. Skip the taxis, ditch the bus timetable, and ride on your own schedule.</p>
         </section>
@@ -1369,7 +1331,7 @@
         <!-- Key benefits -->
         <section class="section" style="max-width:600px; margin:0 auto 2rem;">
             <ul style="list-style:none; padding:0; display:grid; gap:0.5rem;">
-                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">💰</span> <strong>Cheap scooter hire in Airlie Beach</strong> — from $30/day</li>
+                <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">💰</span> <strong>Cheap scooter hire in Airlie Beach</strong> — from $45/day</li>
                 <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">🪪</span> 50cc mopeds — drive with a regular car licence</li>
                 <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">🪖</span> Helmets included with every rental</li>
                 <li style="background:var(--bg-secondary); padding:0.65rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.75rem; font-size:0.9rem;"><span style="font-size:1.1rem;">⚡</span> Easy online booking with fast approval</li>
@@ -1390,8 +1352,8 @@
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Choose Your Scooter</h3>
-                    <p>Browse our mopeds and electric scooters above. Check pricing and photos.</p>
+                    <h3>Choose Your Moped</h3>
+                    <p>Browse our 50cc mopeds above. Check pricing and photos.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
@@ -1472,9 +1434,9 @@
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Picked up the electric scooter for a few days — $30 a day is unbeatable. Used it to zip around town and out to Shute Harbour. Free delivery and pickup made it so hassle-free. Would 100% recommend to anyone visiting Airlie Beach."</p>
+                    <p class="review-text">"Picked up a moped for a few days — $45 a day is unbeatable. Used it to zip around town and out to Shute Harbour. Free delivery and pickup made it so hassle-free. Would 100% recommend to anyone visiting Airlie Beach."</p>
                     <div class="review-author">Chris L.</div>
-                    <div class="review-meta">Brisbane — Hired a Ninebot F2 Pro</div>
+                    <div class="review-meta">Brisbane — Hired a Kymco Super 8 50cc</div>
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
@@ -1527,9 +1489,9 @@
     <noscript>
         <section style="max-width:1200px; margin:0 auto; padding:2rem;">
             <h2>Cheap Scooter Hire &amp; Moped Rental in Airlie Beach</h2>
-            <p>Airlie Scooter Hire offers the best prices for scooter and moped rental in Airlie Beach, Queensland. Explore the Whitsundays on two wheels with our fleet of 50cc mopeds and electric scooters. No motorcycle licence needed — just a regular car licence. Helmets included, free pickup and drop-off, from just $30 per day.</p>
+            <p>Airlie Scooter Hire offers the best prices for scooter and moped rental in Airlie Beach, Queensland. Explore the Whitsundays on two wheels with our fleet of 50cc mopeds. No motorcycle licence needed — just a regular car licence. Helmets included, free pickup and drop-off, from just $45 per day.</p>
             <ul>
-                <li>Cheap scooter hire in Airlie Beach — from $30/day</li>
+                <li>Cheap scooter hire in Airlie Beach — from $45/day</li>
                 <li>50cc mopeds — drive with a regular car licence</li>
                 <li>Helmets included with every rental</li>
                 <li>Easy online booking with fast approval</li>
@@ -1563,13 +1525,6 @@
                 <img src="Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png" alt="Kymco Agility 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
             </article>
 
-            <h3>Electric Scooter Hire Airlie Beach</h3>
-            <article>
-                <h4>Ninebot F2 Pro — Electric Scooter Hire Airlie Beach</h4>
-                <p>Powerful electric kick scooter with LED display and foldable design. $30/day, $120/week. Zero emissions. The cheapest way to get around Airlie Beach.</p>
-                <img src="Static/Ninebot F2 Pro Scooter/ChatGPT Image Apr 3, 2026, 10_20_25 PM.png" alt="Ninebot F2 Pro electric scooter for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
-            </article>
-
             <h3>Frequently Asked Questions — Scooter Hire Airlie Beach</h3>
             <p><strong>Do I need a motorcycle licence?</strong> No — all mopeds are 50cc so a regular car licence is fine.</p>
             <p><strong>Are helmets included?</strong> Yes — helmets, fuel, and a riding walkthrough are all included.</p>
@@ -1585,6 +1540,7 @@
 
     <footer style="background: #2c1810; color: rgba(255,255,255,0.6);">
         <p>&copy; 2026 Airlie Scooter Hire. All rights reserved.</p>
+        <p style="margin-top:0.5rem;"><a href="privacy.html" style="color: rgba(255,255,255,0.75);">Privacy Policy</a></p>
     </footer>
 
     <!-- Long-Term Inquiry Modal -->
@@ -1615,68 +1571,14 @@
                         <label class="form-label">Your Message *</label>
                         <textarea class="form-input" id="ltMessage" rows="5" required placeholder="e.g. I'm looking for a moped for 4 weeks starting mid-August. I'm a seasonal worker staying at..."></textarea>
                     </div>
+                    <div class="form-group recaptcha-container" style="display:none;">
+                        <div id="recaptchaLongterm"></div>
+                    </div>
                 </form>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.75rem;">By sending this enquiry you agree to our <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--accent-red);">Privacy Policy</a>.</p>
             </div>
             <div class="modal-footer" style="padding:0 2rem 1.5rem;">
                 <button class="btn btn-primary" onclick="submitLongTermInquiry()" id="ltSubmitBtn" style="width:100%;">Send Enquiry</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit/Add Modal -->
-    <div class="modal-overlay" id="editModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Add Vehicle</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="productForm">
-                    <input type="hidden" id="productId">
-                    <div class="form-group">
-                        <label class="form-label">Vehicle Name</label>
-                        <input type="text" class="form-input" id="productName" placeholder="e.g., Vespa Sprint 150" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-input" id="productCategory">
-                            <option value="scooter">Electric Scooter</option>
-                            <option value="moped">Moped</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-input" id="productDescription" placeholder="Features, specs, etc."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Image</label>
-                        <div id="imagePreview" style="display:none; margin-bottom:0.75rem; border-radius:0.5rem; overflow:hidden; border:1px solid var(--border); max-height:180px;">
-                            <img id="imagePreviewImg" style="width:100%; max-height:180px; object-fit:cover; display:block;" alt="Preview">
-                        </div>
-                        <div style="display:flex; gap:0.5rem; align-items:stretch;">
-                            <input type="text" class="form-input" id="productImage" placeholder="Image URL or upload a file" style="flex:1;">
-                            <label style="display:inline-flex; align-items:center; gap:0.3rem; padding:0.65rem 1rem; background:var(--bg-primary); border:1px solid var(--border); border-radius:0.5rem; cursor:pointer; font-size:0.85rem; font-weight:500; color:var(--text-secondary); white-space:nowrap; transition:all 0.2s;">
-                                Upload
-                                <input type="file" accept="image/*" id="imageUpload" onchange="handleImageUpload(event)" style="display:none;">
-                            </label>
-                        </div>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.35rem;">Upload a photo or paste a URL / local path (e.g. Static/folder/image.jpg)</p>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Daily Price ($)</label>
-                            <input type="number" class="form-input" id="dailyPrice" placeholder="45" min="0" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Weekly Price ($)</label>
-                            <input type="number" class="form-input" id="weeklyPrice" placeholder="250" min="0" step="0.01" required>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="saveProduct()">Save</button>
             </div>
         </div>
     </div>
@@ -1900,6 +1802,12 @@
                                 <label for="agreeBinding">By typing my name above, I acknowledge this form constitutes a legally binding declaration *</label>
                             </div>
                         </div>
+                        <div class="form-group" style="font-size:0.8rem; color:var(--text-muted);">
+                            By submitting this form you agree to our <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--accent-red);">Privacy Policy</a>.
+                        </div>
+                        <div class="form-group recaptcha-container" style="display:none;">
+                            <div id="recaptchaBooking"></div>
+                        </div>
                     </div>
 
                 </form>
@@ -1936,23 +1844,6 @@
         </div>
     </div>
 
-    <!-- Availability Modal (Admin) -->
-    <div class="modal-overlay" id="availabilityModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Manage Booked Dates</h3>
-                <button class="modal-close" onclick="closeAvailabilityModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size:0.9rem;">Click dates to mark them as booked/available:</p>
-                <div id="availabilityCalendar"></div>
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-primary" onclick="closeAvailabilityModal()">Done</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // ─── EmailJS Config ──────────────────────────────────────────
         // Sign up at https://www.emailjs.com (free tier = 200 emails/month)
@@ -1976,213 +1867,145 @@
 
         emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-        // ─── State ───────────────────────────────────────────────────
-        let products = [];
-        let isAdmin = false;
-        let codeBuffer = '';
-        const ADMIN_CODE = '270304';
-        let currentEditId = null;
-        let currentAvailabilityId = null;
-        let availCalMonth = null;
+        // ─── reCAPTCHA (spam protection for the enquiry forms) ───────
+        // To turn this on:
+        //   1. Get a free reCAPTCHA v2 ("I'm not a robot") key pair at
+        //      https://www.google.com/recaptcha/admin (add your domain).
+        //   2. Paste the SITE key below.
+        //   3. In your EmailJS template settings, enable reCAPTCHA V2 and
+        //      paste the matching SECRET key so EmailJS verifies every send.
+        // Until a site key is set here, the forms work exactly as before.
+        const RECAPTCHA_SITE_KEY = '';
+        const recaptchaWidgets = {};
 
-        // Booking calendar state
+        function ensureRecaptcha(key, elId) {
+            if (!RECAPTCHA_SITE_KEY) return;
+            const el = document.getElementById(elId);
+            if (!el) return;
+            const container = el.closest('.recaptcha-container');
+            if (container) container.style.display = 'block';
+            if (recaptchaWidgets[key] !== undefined) return;
+            if (window.grecaptcha && grecaptcha.render) {
+                recaptchaWidgets[key] = grecaptcha.render(elId, { sitekey: RECAPTCHA_SITE_KEY });
+            } else {
+                setTimeout(() => ensureRecaptcha(key, elId), 300);
+            }
+        }
+
+        // Returns null when disabled (no enforcement), '' when not yet solved.
+        function getRecaptchaToken(key) {
+            if (!RECAPTCHA_SITE_KEY) return null;
+            if (window.grecaptcha && recaptchaWidgets[key] !== undefined) {
+                return grecaptcha.getResponse(recaptchaWidgets[key]);
+            }
+            return '';
+        }
+
+        function resetRecaptcha(key) {
+            if (RECAPTCHA_SITE_KEY && window.grecaptcha && recaptchaWidgets[key] !== undefined) {
+                grecaptcha.reset(recaptchaWidgets[key]);
+            }
+        }
+
+        // ─── Booking calendar state ─────────────────────────────────
         let bookingCalMonth = null;
         let bookingStartDate = null;
         let bookingEndDate = null;
         let bookingVehicleId = null;
 
-        // Pricing tiers: each tier defines a multiplier applied to base prices
-        const PRICING_TIERS = {
-            low:    { label: 'Low Demand',    mopedDaily: 30, mopedWeekly: 170, scooterDaily: 30, scooterWeekly: 120 },
-            medium: { label: 'Medium Demand',  mopedDaily: 35, mopedWeekly: 200, scooterDaily: 30, scooterWeekly: 120 },
-            high:   { label: 'High Demand',    mopedDaily: 45, mopedWeekly: 250, scooterDaily: 35, scooterWeekly: 140 },
-            peak:   { label: 'Peak Demand',    mopedDaily: 55, mopedWeekly: 300, scooterDaily: 40, scooterWeekly: 160 }
-        };
-        let currentTier = localStorage.getItem('scootPricingTier') || 'low';
-
         // ─── Init ────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
-            applyPricingTier();
             renderAll();
-            updateTierUI();
-            setupKeyListener();
-
-            const imgInput = document.getElementById('productImage');
-            if (imgInput) {
-                imgInput.addEventListener('input', () => updateImagePreview(imgInput.value));
-            }
         });
 
-        function setupKeyListener() {
-            document.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
-                if (/^\d$/.test(e.key)) {
-                    codeBuffer += e.key;
-                    if (codeBuffer.length > 6) codeBuffer = codeBuffer.slice(-6);
-                    if (codeBuffer === ADMIN_CODE) {
-                        toggleAdminMode();
-                        codeBuffer = '';
-                    }
-                }
-            });
-        }
-
-        function toggleAdminMode() {
-            isAdmin = !isAdmin;
-            document.getElementById('adminBadge').classList.toggle('active', isAdmin);
-            document.getElementById('pricingTierControl').style.display = isAdmin ? 'block' : 'none';
-            renderAll();
-            showNotification(isAdmin ? 'Admin mode activated' : 'Admin mode deactivated');
-        }
-
-        function applyPricingTier() {
-            const tier = PRICING_TIERS[currentTier];
-            products.forEach(p => {
-                if (p.category === 'moped') {
-                    p.dailyPrice = tier.mopedDaily;
-                    p.weeklyPrice = tier.mopedWeekly;
-                } else if (p.category === 'scooter') {
-                    p.dailyPrice = tier.scooterDaily;
-                    p.weeklyPrice = tier.scooterWeekly;
-                }
-            });
-            saveProducts();
-        }
-
-        function setPricingTier(tier) {
-            currentTier = tier;
-            localStorage.setItem('scootPricingTier', tier);
-            applyPricingTier();
-            renderAll();
-            updateTierUI();
-            showNotification(`Pricing set to ${PRICING_TIERS[tier].label}: Mopeds $${PRICING_TIERS[tier].mopedDaily}/day, Scooters $${PRICING_TIERS[tier].scooterDaily}/day`);
-        }
-
-        function updateTierUI() {
-            document.querySelectorAll('.tier-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tier === currentTier);
-            });
-            const tier = PRICING_TIERS[currentTier];
-            const info = document.getElementById('tierInfo');
-            if (info) info.textContent = `Current: ${tier.label} — Mopeds $${tier.mopedDaily}/day ($${tier.mopedWeekly}/wk) · Scooters $${tier.scooterDaily}/day ($${tier.scooterWeekly}/wk)`;
-        }
-
         // ─── Data ────────────────────────────────────────────────────
-        function loadProducts() {
-            const stored = localStorage.getItem('scootWhitsundaysProducts_v7');
-            if (stored) {
-                products = JSON.parse(stored);
-            } else {
-                products = [
-                    {
-                        id: '4',
-                        category: 'scooter',
-                        name: 'Ninebot F2 Pro',
-                        description: 'Powerful electric kick scooter with LED display, long-range battery, and foldable design. Perfect for quick trips around town — zero fuel, zero emissions. Charges from any power outlet.',
-                        image: 'Static/Ninebot F2 Pro Scooter/ChatGPT Image Apr 3, 2026, 10_20_25 PM.png',
-                        gallery: [
-                            'Static/Ninebot F2 Pro Scooter/ChatGPT Image Apr 3, 2026, 10_20_25 PM.png',
-                            'Static/Ninebot F2 Pro Scooter/f786b3b7-66d1-4c57-9910-6b3431ba5f5c.jpg',
-                            'Static/Ninebot F2 Pro Scooter/601bfcec-63be-4e63-9637-aaad3e39d694.jpg'
-                        ],
-                        dailyPrice: 30,
-                        weeklyPrice: 120,
-                        available: true,
-                        bookedDates: []
-                    },
-                    {
-                        id: '1',
-                        category: 'moped',
-                        name: 'Kymco Like 50cc',
-                        description: 'Classic Italian styling with modern reliability. Smooth automatic transmission, rear storage box, and great fuel economy. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
-                        image: 'Static/Kymco like 50cc/Red scooter at sunset by the beach.png',
-                        gallery: [
-                            'Static/Kymco like 50cc/Red scooter at sunset by the beach.png',
-                            'Static/Kymco like 50cc/ChatGPT Image Apr 3, 2026, 01_38_50 PM.png',
-                            'Static/Kymco like 50cc/fe50a166-568e-4b14-b96a-167f93731c4c.jpg',
-                            'Static/Kymco like 50cc/9f2203d5-d432-42e7-b52e-de48d39334f1.jpg',
-                            'Static/Kymco like 50cc/0e4d1708-24d4-4aa1-a496-706356a79912.jpg',
-                            'Static/Kymco like 50cc/f3314c29-ab55-4b6c-b70f-ee91d4a58622.jpg'
-                        ],
-                        dailyPrice: 55,
-                        weeklyPrice: 300,
-                        available: true,
-                        bookedDates: []
-                    },
-                    {
-                        id: '2',
-                        category: 'moped',
-                        name: 'Red Devil 50cc',
-                        description: 'Nimble and fun to ride around Airlie Beach. Lightweight, easy handling, and plenty of character. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
-                        image: 'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
-                        gallery: [
-                            'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
-                            'Static/Red Devil 50cc/68b9e7bb-73f1-407c-bfe6-af64bcd3787e.png',
-                            'Static/Red Devil 50cc/5102254a-8c02-48ef-a597-96c55a5c381c.jpg',
-                            'Static/Red Devil 50cc/2f52d454-1664-48d2-be9b-2d7ccf57495b.jpg',
-                            'Static/Red Devil 50cc/c071ca9d-ba0e-44c6-8d78-361d0e102218.jpg'
-                        ],
-                        dailyPrice: 45,
-                        weeklyPrice: 250,
-                        available: true,
-                        bookedDates: []
-                    },
-                    {
-                        id: '3',
-                        category: 'moped',
-                        name: 'SYM Mio 50cc',
-                        description: 'Stylish and comfortable with a smooth ride. Perfect for cruising the coast and exploring at your own pace. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
-                        image: 'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
-                        gallery: [
-                            'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
-                            'Static/SYM Mio 50cc/2ccdb708-bc5b-4a00-a380-d8c2c192bdc2.png'
-                        ],
-                        dailyPrice: 45,
-                        weeklyPrice: 250,
-                        available: true,
-                        bookedDates: []
-                    },
-                    {
-                        id: '4',
-                        category: 'moped',
-                        name: 'Kymco Super 8 50cc',
-                        description: 'Sporty and reliable 50cc moped with a bold look. Easy automatic transmission, great for getting around Airlie Beach. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
-                        image: 'Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png',
-                        gallery: [
-                            'Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png'
-                        ],
-                        dailyPrice: 45,
-                        weeklyPrice: 250,
-                        available: true,
-                        bookedDates: []
-                    },
-                    {
-                        id: '5',
-                        category: 'moped',
-                        name: 'Kymco Agility 50cc',
-                        description: 'Lightweight and agile 50cc moped built for easy riding. Smooth handling around town, perfect for exploring the Whitsundays. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
-                        image: 'Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png',
-                        gallery: [
-                            'Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png'
-                        ],
-                        dailyPrice: 45,
-                        weeklyPrice: 250,
-                        available: true,
-                        bookedDates: []
-                    }
-                ];
-                saveProducts();
+        // All mopeds are a flat $45/day, $250/week. To change the fleet or
+        // pricing, edit this list directly and re-deploy.
+        const products = [
+            {
+                id: '1',
+                category: 'moped',
+                name: 'Kymco Like 50cc',
+                description: 'Classic Italian styling with modern reliability. Smooth automatic transmission, rear storage box, and great fuel economy. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                image: 'Static/Kymco like 50cc/Red scooter at sunset by the beach.png',
+                gallery: [
+                    'Static/Kymco like 50cc/Red scooter at sunset by the beach.png',
+                    'Static/Kymco like 50cc/ChatGPT Image Apr 3, 2026, 01_38_50 PM.png',
+                    'Static/Kymco like 50cc/fe50a166-568e-4b14-b96a-167f93731c4c.jpg',
+                    'Static/Kymco like 50cc/9f2203d5-d432-42e7-b52e-de48d39334f1.jpg',
+                    'Static/Kymco like 50cc/0e4d1708-24d4-4aa1-a496-706356a79912.jpg',
+                    'Static/Kymco like 50cc/f3314c29-ab55-4b6c-b70f-ee91d4a58622.jpg'
+                ],
+                dailyPrice: 45,
+                weeklyPrice: 250,
+                available: true,
+                bookedDates: []
+            },
+            {
+                id: '2',
+                category: 'moped',
+                name: 'Red Devil 50cc',
+                description: 'Nimble and fun to ride around Airlie Beach. Lightweight, easy handling, and plenty of character. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                image: 'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
+                gallery: [
+                    'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
+                    'Static/Red Devil 50cc/68b9e7bb-73f1-407c-bfe6-af64bcd3787e.png',
+                    'Static/Red Devil 50cc/5102254a-8c02-48ef-a597-96c55a5c381c.jpg',
+                    'Static/Red Devil 50cc/2f52d454-1664-48d2-be9b-2d7ccf57495b.jpg',
+                    'Static/Red Devil 50cc/c071ca9d-ba0e-44c6-8d78-361d0e102218.jpg'
+                ],
+                dailyPrice: 45,
+                weeklyPrice: 250,
+                available: true,
+                bookedDates: []
+            },
+            {
+                id: '3',
+                category: 'moped',
+                name: 'SYM Mio 50cc',
+                description: 'Stylish and comfortable with a smooth ride. Perfect for cruising the coast and exploring at your own pace. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                image: 'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
+                gallery: [
+                    'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
+                    'Static/SYM Mio 50cc/2ccdb708-bc5b-4a00-a380-d8c2c192bdc2.png'
+                ],
+                dailyPrice: 45,
+                weeklyPrice: 250,
+                available: true,
+                bookedDates: []
+            },
+            {
+                id: '4',
+                category: 'moped',
+                name: 'Kymco Super 8 50cc',
+                description: 'Sporty and reliable 50cc moped with a bold look. Easy automatic transmission, great for getting around Airlie Beach. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                image: 'Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png',
+                gallery: [
+                    'Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png'
+                ],
+                dailyPrice: 45,
+                weeklyPrice: 250,
+                available: true,
+                bookedDates: []
+            },
+            {
+                id: '5',
+                category: 'moped',
+                name: 'Kymco Agility 50cc',
+                description: 'Lightweight and agile 50cc moped built for easy riding. Smooth handling around town, perfect for exploring the Whitsundays. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Pickup and drop-off can be arranged.',
+                image: 'Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png',
+                gallery: [
+                    'Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png'
+                ],
+                dailyPrice: 45,
+                weeklyPrice: 250,
+                available: true,
+                bookedDates: []
             }
-        }
-
-        function saveProducts() {
-            localStorage.setItem('scootWhitsundaysProducts_v7', JSON.stringify(products));
-        }
+        ];
 
         // ─── Render ──────────────────────────────────────────────────
         function renderAll() {
-            renderSection('scooter', 'scootersGrid');
             renderSection('moped', 'mopedsGrid');
         }
 
@@ -2190,43 +2013,26 @@
             const grid = document.getElementById(gridId);
             const items = products.filter(p => p.category === category);
 
-            if (items.length === 0 && !isAdmin) {
+            if (items.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);">
-                        <div style="font-size:2.5rem; margin-bottom:0.5rem;">${category === 'scooter' ? '⚡' : '🛵'}</div>
-                        <p>No ${category === 'scooter' ? 'electric scooters' : 'mopeds'} listed yet — check back soon!</p>
+                        <div style="font-size:2.5rem; margin-bottom:0.5rem;">🛵</div>
+                        <p>No mopeds listed yet — check back soon!</p>
                     </div>`;
                 return;
             }
 
-            let html = items.map(p => renderCard(p)).join('');
-
-            if (isAdmin) {
-                html += `
-                    <div class="add-product-card active" onclick="openAddModal('${category}')">
-                        <div class="add-product-content">
-                            <div class="add-icon">+</div>
-                            <p>Add ${category === 'scooter' ? 'Electric Scooter' : 'Moped'}</p>
-                        </div>
-                    </div>`;
-            }
-
-            grid.innerHTML = html;
+            grid.innerHTML = items.map(p => renderCard(p)).join('');
         }
 
         function renderCard(product) {
             const imgContent = product.image
                 ? `<img src="${product.image}" alt="${product.name} — available for rent in Airlie Beach" loading="lazy">`
-                : (product.category === 'scooter' ? '⚡' : '🛵');
+                : '🛵';
 
-            const isMoped = product.category === 'moped';
-            const availBadge = isMoped
-                ? `<div class="availability-badge ${product.available ? 'available' : 'unavailable'}">${product.available ? 'Available' : 'Unavailable'}</div>`
-                : '';
+            const availBadge = `<div class="availability-badge ${product.available ? 'available' : 'unavailable'}">${product.available ? 'Available' : 'Unavailable'}</div>`;
 
-            const canBook = isMoped ? product.available : true;
-
-            const bookBtn = canBook
+            const bookBtn = product.available
                 ? `<button class="btn btn-primary" onclick="event.stopPropagation(); openBookingModal('${product.id}')">Request Booking</button>`
                 : `<span class="btn btn-disabled">Currently Unavailable</span>`;
 
@@ -2253,24 +2059,8 @@
                             ${bookBtn}
                             <a href="tel:+610478393479" class="btn btn-call" onclick="event.stopPropagation();"><span class="phone-label">Call Now!</span><span class="phone-number">Call Now!</span></a>
                         </div>
-                        <div class="admin-controls ${isAdmin ? 'active' : ''}">
-                            <button class="admin-btn" onclick="event.stopPropagation(); openEditModal('${product.id}')">Edit</button>
-                            ${isMoped ? `<button class="admin-btn toggle-avail" onclick="event.stopPropagation(); toggleAvailability('${product.id}')">${product.available ? 'Mark Unavailable' : 'Mark Available'}</button>` : ''}
-                            <button class="admin-btn" onclick="event.stopPropagation(); openAvailabilityModal('${product.id}')">Manage Dates</button>
-                            <button class="admin-btn delete" onclick="event.stopPropagation(); deleteProduct('${product.id}')">Delete</button>
-                        </div>
                     </div>
                 </div>`;
-        }
-
-        // ─── Availability Toggle (Moped) ────────────────────────────
-        function toggleAvailability(id) {
-            const p = products.find(x => x.id === id);
-            if (!p) return;
-            p.available = !p.available;
-            saveProducts();
-            renderAll();
-            showNotification(`${p.name} marked as ${p.available ? 'available' : 'unavailable'}`);
         }
 
         // ─── Detail / Gallery Modal ──────────────────────────────────
@@ -2372,180 +2162,6 @@
             });
         })();
 
-        // ─── Image Upload Handler ────────────────────────────────────
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-                showNotification('Image too large — max 5 MB');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('productImage').value = e.target.result;
-                updateImagePreview(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updateImagePreview(src) {
-            const preview = document.getElementById('imagePreview');
-            const img = document.getElementById('imagePreviewImg');
-            if (src) {
-                img.src = src;
-                preview.style.display = 'block';
-                img.onerror = () => { preview.style.display = 'none'; };
-            } else {
-                preview.style.display = 'none';
-            }
-        }
-
-        // ─── Edit Modal ──────────────────────────────────────────────
-        function openAddModal(category) {
-            currentEditId = null;
-            document.getElementById('modalTitle').textContent = `Add ${category === 'scooter' ? 'Electric Scooter' : 'Moped'}`;
-            document.getElementById('productForm').reset();
-            document.getElementById('productCategory').value = category;
-            document.getElementById('imageUpload').value = '';
-            updateImagePreview('');
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        function openEditModal(id) {
-            const p = products.find(x => x.id === id);
-            if (!p) return;
-            currentEditId = id;
-            document.getElementById('modalTitle').textContent = 'Edit Vehicle';
-            document.getElementById('productName').value = p.name;
-            document.getElementById('productCategory').value = p.category;
-            document.getElementById('productDescription').value = p.description || '';
-            document.getElementById('productImage').value = p.image || '';
-            document.getElementById('dailyPrice').value = p.dailyPrice;
-            document.getElementById('weeklyPrice').value = p.weeklyPrice;
-            document.getElementById('imageUpload').value = '';
-            updateImagePreview(p.image || '');
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
-            currentEditId = null;
-            updateImagePreview('');
-        }
-
-        function saveProduct() {
-            const name = document.getElementById('productName').value.trim();
-            const category = document.getElementById('productCategory').value;
-            const description = document.getElementById('productDescription').value.trim();
-            const image = document.getElementById('productImage').value.trim();
-            const dailyPrice = parseFloat(document.getElementById('dailyPrice').value) || 0;
-            const weeklyPrice = parseFloat(document.getElementById('weeklyPrice').value) || 0;
-
-            if (!name) { showNotification('Please enter a name'); return; }
-
-            if (currentEditId) {
-                const p = products.find(x => x.id === currentEditId);
-                if (p) {
-                    Object.assign(p, { name, category, description, image, dailyPrice, weeklyPrice });
-                }
-            } else {
-                products.push({
-                    id: Date.now().toString(),
-                    category,
-                    name,
-                    description,
-                    image,
-                    dailyPrice,
-                    weeklyPrice,
-                    available: true,
-                    bookedDates: []
-                });
-            }
-
-            saveProducts();
-            renderAll();
-            closeModal();
-            showNotification(currentEditId ? 'Updated!' : 'Added!');
-        }
-
-        function deleteProduct(id) {
-            if (!confirm('Delete this vehicle?')) return;
-            products = products.filter(p => p.id !== id);
-            saveProducts();
-            renderAll();
-            showNotification('Deleted');
-        }
-
-        // ─── Availability Modal (Admin date management) ─────────────
-        function openAvailabilityModal(id) {
-            currentAvailabilityId = id;
-            const now = new Date();
-            availCalMonth = { year: now.getFullYear(), month: now.getMonth() };
-            renderAvailabilityCalendar();
-            document.getElementById('availabilityModal').classList.add('active');
-        }
-
-        function closeAvailabilityModal() {
-            document.getElementById('availabilityModal').classList.remove('active');
-            currentAvailabilityId = null;
-            renderAll();
-        }
-
-        function renderAvailabilityCalendar() {
-            const container = document.getElementById('availabilityCalendar');
-            const product = products.find(p => p.id === currentAvailabilityId);
-            if (!product) return;
-
-            const { year, month } = availCalMonth;
-            let html = `
-                <div class="cal-header">
-                    <button class="btn btn-secondary" onclick="availCalPrev()" style="padding:0.4rem 0.8rem;">&lt;</button>
-                    <span class="cal-title">${new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                    <button class="btn btn-secondary" onclick="availCalNext()" style="padding:0.4rem 0.8rem;">&gt;</button>
-                </div>
-                <div class="cal-grid">`;
-
-            ['S','M','T','W','T','F','S'].forEach(d => { html += `<div class="cal-day-label">${d}</div>`; });
-
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            for (let i = 0; i < firstDay.getDay(); i++) html += '<div class="cal-day empty"></div>';
-
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-                const dateStr = new Date(year, month, day).toISOString().split('T')[0];
-                const isBooked = product.bookedDates && product.bookedDates.includes(dateStr);
-                html += `<div class="cal-day ${isBooked ? 'booked' : 'available'}" onclick="toggleDateAvail('${dateStr}')" style="cursor:pointer;">${day}</div>`;
-            }
-
-            html += '</div>';
-            container.innerHTML = html;
-        }
-
-        function availCalPrev() {
-            availCalMonth.month--;
-            if (availCalMonth.month < 0) { availCalMonth.month = 11; availCalMonth.year--; }
-            renderAvailabilityCalendar();
-        }
-
-        function availCalNext() {
-            availCalMonth.month++;
-            if (availCalMonth.month > 11) { availCalMonth.month = 0; availCalMonth.year++; }
-            renderAvailabilityCalendar();
-        }
-
-        function toggleDateAvail(dateStr) {
-            const p = products.find(x => x.id === currentAvailabilityId);
-            if (!p) return;
-            if (!p.bookedDates) p.bookedDates = [];
-            const idx = p.bookedDates.indexOf(dateStr);
-            if (idx > -1) p.bookedDates.splice(idx, 1);
-            else p.bookedDates.push(dateStr);
-            saveProducts();
-            renderAvailabilityCalendar();
-        }
-
         // ─── Booking Modal ───────────────────────────────────────────
         function openBookingModal(id) {
             const p = products.find(x => x.id === id);
@@ -2569,6 +2185,7 @@
             document.getElementById('bookingModal').classList.add('active');
             renderBookingCalendar();
             updateDateSummary();
+            ensureRecaptcha('booking', 'recaptchaBooking');
         }
 
         function closeBookingModal() {
@@ -2580,6 +2197,7 @@
         function openLongTermModal() {
             document.getElementById('longTermForm').reset();
             document.getElementById('longTermModal').classList.add('active');
+            ensureRecaptcha('longterm', 'recaptchaLongterm');
         }
 
         function closeLongTermModal() {
@@ -2594,6 +2212,12 @@
 
             if (!name || !email || !phone || !message) {
                 showNotification('Please fill in all fields');
+                return;
+            }
+
+            const captchaToken = getRecaptchaToken('longterm');
+            if (captchaToken === '') {
+                showNotification('Please complete the "I\'m not a robot" check');
                 return;
             }
 
@@ -2635,10 +2259,12 @@
                 rental_form_completed: 'No — long-term enquiry only',
                 confirm_link: ''
             };
+            if (captchaToken) templateParams['g-recaptcha-response'] = captchaToken;
 
             try {
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
                 showNotification('Enquiry sent! We\'ll get back to you soon.');
+                resetRecaptcha('longterm');
                 closeLongTermModal();
             } catch (err) {
                 console.error('EmailJS error:', err);
@@ -2855,6 +2481,12 @@
                 return;
             }
 
+            const captchaToken = getRecaptchaToken('booking');
+            if (captchaToken === '') {
+                showNotification('Please complete the "I\'m not a robot" check');
+                return;
+            }
+
             const product = products.find(p => p.id === bookingVehicleId);
             if (!product) return;
 
@@ -2886,7 +2518,7 @@
                 email: email,
                 message: '',
                 vehicle_name: product.name,
-                vehicle_category: product.category === 'scooter' ? 'Electric Scooter' : 'Moped',
+                vehicle_category: 'Moped',
                 customer_name: name,
                 customer_dob: dob,
                 customer_email: email,
@@ -2913,10 +2545,12 @@
                 rental_form_completed: 'Yes (submitted via website)',
                 confirm_link: confirmLink
             };
+            if (captchaToken) templateParams['g-recaptcha-response'] = captchaToken;
 
             try {
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
                 showNotification('Rental agreement submitted! We\'ll be in touch soon.');
+                resetRecaptcha('booking');
                 closeBookingModal();
             } catch (err) {
                 console.error('EmailJS error:', err);
