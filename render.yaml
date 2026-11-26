@@ -1,0 +1,39 @@
+# Render Blueprint for the self-service booking server.
+# In Render: New → Blueprint → pick this repo. Secrets marked `sync: false`
+# are typed into Render's dashboard (never stored in this file).
+services:
+  - type: web
+    name: airlie-scooter-hire
+    runtime: node
+    plan: starter            # needed for the disk below (free plans can't keep data)
+    region: singapore        # closest Render region to Airlie Beach
+    branch: main
+    rootDir: server
+    buildCommand: npm ci
+    startCommand: npm run start:render
+    healthCheckPath: /api/health
+    disk:
+      name: data
+      mountPath: /var/data   # bookings database + trip videos live here
+      sizeGB: 5
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DATA_DIR
+        value: /var/data
+      - key: PUBLIC_BASE_URL
+        value: https://airliescooterhire.com
+      - key: EMAIL_FROM
+        value: Airlie Scooter Hire <bookings@airliescooterhire.com>
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: OWNER_NOTIFY_EMAIL
+        sync: false
+      - key: ADMIN_PIN
+        sync: false

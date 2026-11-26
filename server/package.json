@@ -1,0 +1,23 @@
+{
+  "name": "airlie-scooter-hire-server",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.9"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "start:render": "node src/seed.js --if-empty && node src/index.js",
+    "seed": "node --env-file-if-exists=.env src/seed.js",
+    "demo": "node --env-file-if-exists=.env src/demo-bookings.js",
+    "preview-emails": "node src/preview-emails.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.6.0",
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
+    "stripe": "^23.2.0"
+  }
+}

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Scooter | Airlie Scooter Hire</title>
+<meta name="description" content="Book 50cc scooters in Airlie Beach online: choose how many, pick your dates, pay and pick up from our carport.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/Static/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/Static/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #faf6f1;
+    --bg-card: #ffffff;
+    --bg-hero: linear-gradient(135deg, #1a1028 0%, #3d1832 20%, #8b2a3a 45%, #c44a2f 65%, #e8853a 82%, #f5c45a 100%);
+    --accent-red: #c0392b;
+    --accent-red-light: #d94f3f;
+    --accent-warm: #e07a3a;
+    --accent-gold: #e8a830;
+    --accent-deep: #8b2a3a;
+    --text-primary: #2c1810;
+    --text-secondary: #6b4e42;
+    --text-muted: #8f7566;
+    --border: #e8ddd4;
+    --shadow-md: 0 4px 16px rgba(44,24,16,0.08);
+    --radius: 1rem;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; -webkit-text-size-adjust: 100%; }
+  a { color: var(--accent-red); }
+
+  .hero { background: var(--bg-hero); color: #fff; padding: 1.25rem 1rem 2.75rem; position: relative; }
+  .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent-red), var(--accent-warm), var(--accent-gold)); }
+  .hero-inner { max-width: 640px; margin: 0 auto; }
+  .back { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; }
+  .hero h1 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(1.7rem, 6vw, 2.3rem); margin-top: 1rem; }
+  .hero p { opacity: 0.9; margin-top: 0.35rem; font-size: 0.98rem; }
+
+  main { max-width: 640px; margin: -1.5rem auto 0; padding: 0 1rem 7rem; position: relative; }
+  .card { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 1.25rem; margin-bottom: 1rem; }
+  .card[hidden] { display: none; }
+  .step-title { font-family: 'Fraunces', serif; font-size: 1.15rem; display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+  .step-num { width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--accent-red); color: #fff; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sub { font-family: 'Fraunces', serif; font-size: 1rem; margin: 1.25rem 0 0.75rem; }
+
+  label.lbl, span.lbl { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.35rem; }
+  .field { margin-bottom: 0.9rem; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.75rem; }
+  .row > * { min-width: 0; }
+  @media (max-width: 420px) { .row.stack { grid-template-columns: 1fr; } }
+  .input { width: 100%; min-width: 0; min-height: 48px; padding: 0.7rem 0.85rem; border: 1px solid var(--border); border-radius: 0.6rem; font: inherit; font-size: 16px; color: var(--text-primary); background: var(--bg-primary); -webkit-appearance: none; appearance: none; }
+  input[type="date"].input { display: block; }
+  input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+  select.input { background-image: linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%), linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 2rem; }
+  textarea.input { min-height: 84px; resize: vertical; }
+  .input:focus { outline: none; border-color: var(--accent-red); box-shadow: 0 0 0 3px rgba(192,57,43,0.12); }
+  .hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; line-height: 1.45; }
+
+  .msg { font-size: 0.9rem; padding: 0.8rem 0.9rem; border-radius: 0.6rem; margin-top: 0.75rem; line-height: 1.45; }
+  .msg.err { background: #fdecea; color: #8b2a2a; }
+  .msg.info { background: var(--bg-primary); color: var(--text-secondary); }
+
+  /* How many scooters */
+  .stepper { display: flex; align-items: center; gap: 1rem; }
+  .stepper button { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-primary); font-size: 1.6rem; line-height: 1; color: var(--text-primary); cursor: pointer; }
+  .stepper button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .stepper-val { min-width: 7.5rem; text-align: center; }
+  .stepper-val strong { display: block; font-family: 'Fraunces', serif; font-size: 2rem; line-height: 1.1; }
+  .stepper-val span { font-size: 0.85rem; color: var(--text-secondary); }
+
+  /* Calendar */
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+  .cal-head strong { font-family: 'Fraunces', serif; font-size: 1.05rem; }
+  .cal-nav { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-primary); font-size: 1.2rem; cursor: pointer; color: var(--text-primary); }
+  .cal-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+  .cal-dow { text-align: center; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); padding: 0.2rem 0; }
+  .cal-day { aspect-ratio: 1 / 1.05; border: none; border-radius: 0.5rem; background: var(--bg-primary); font: inherit; color: var(--text-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; cursor: pointer; padding: 0; min-height: 44px; }
+  .cal-day .d { font-size: 0.95rem; font-weight: 600; line-height: 1; }
+  .cal-day .f { font-size: 0.68rem; line-height: 1; color: #2f7a4b; font-weight: 600; }
+  .cal-day.empty { background: none; cursor: default; }
+  .cal-day.past { opacity: 0.35; cursor: default; }
+  .cal-day.past .f { visibility: hidden; }
+  .cal-day.low { background: #f3ece6; color: var(--text-muted); cursor: not-allowed; }
+  .cal-day.low .d { text-decoration: line-through; font-weight: 500; }
+  .cal-day.low .f { color: #b0563f; }
+  .cal-day.in-range { background: #fbe1d6; }
+  .cal-day.sel { background: var(--accent-red); color: #fff; }
+  .cal-day.sel .f { color: #ffe3dc; }
+  .cal-day.loading .f { visibility: hidden; }
+  .cal-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.7rem; }
+  .cal-legend i { display: inline-block; width: 0.85rem; height: 0.85rem; border-radius: 0.2rem; vertical-align: -0.12rem; margin-right: 0.3rem; }
+  .sel-summary { margin-top: 0.8rem; font-size: 0.95rem; }
+
+  /* Bikes */
+  .bikes { display: grid; gap: 0.75rem; }
+  .bike { display: flex; gap: 0.85rem; align-items: center; border: 2px solid var(--border); border-radius: 0.85rem; padding: 0.6rem; cursor: pointer; background: #fff; text-align: left; font: inherit; color: inherit; width: 100%; transition: border-color 0.15s, box-shadow 0.15s; }
+  .bike:hover { border-color: #d9c7b9; }
+  .bike[aria-checked="true"] { border-color: var(--accent-red); box-shadow: 0 0 0 3px rgba(192,57,43,0.12); }
+  .bike img { width: 96px; height: 76px; object-fit: cover; border-radius: 0.55rem; background: var(--bg-primary); flex-shrink: 0; }
+  .opt { display: flex; gap: 0.75rem; align-items: center; border: 1.5px solid var(--border); border-radius: 0.8rem; padding: 0.8rem 0.9rem; margin-top: 0.55rem; cursor: pointer; }
+  .opt:has(input:checked) { border-color: var(--accent-red); background: #fdf3ef; }
+  .opt input { width: 22px; height: 22px; accent-color: var(--accent-red); flex: none; }
+  .opt small { display: block; color: var(--text-secondary); font-size: 0.85rem; font-weight: 400; }
+  .bike-tag { display: inline-block; margin-top: 0.25rem; font-size: 0.72rem; font-weight: 600; color: #8b2a2a; background: #fdecea; border-radius: 99px; padding: 0.1rem 0.5rem; }
+  .bike-num { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-red); }
+  .bike-name { font-weight: 600; font-size: 1.02rem; }
+  .bike-tick { margin-left: auto; width: 1.5rem; height: 1.5rem; border-radius: 0.4rem; border: 2px solid var(--border); flex-shrink: 0; }
+  .bike[aria-checked="true"] .bike-tick { border-color: var(--accent-red); background: var(--accent-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/70% no-repeat; }
+  .pick-count { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+
+  .price { background: linear-gradient(135deg, #fde8c8 0%, #f5d5d0 100%); border-radius: 0.75rem; padding: 1rem 1.1rem; margin-top: 1rem; }
+  .price-row { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.92rem; padding: 0.2rem 0; }
+  .price-row.total { font-weight: 700; font-size: 1.05rem; border-top: 1px solid rgba(139,42,58,0.2); margin-top: 0.4rem; padding-top: 0.55rem; }
+  .price-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.45; }
+
+  .radios { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .radio { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.7rem; min-height: 48px; font-size: 0.92rem; cursor: pointer; background: var(--bg-primary); }
+  .radio:has(input:checked) { border-color: var(--accent-red); background: #fff5f3; }
+  .radio input, .check input { accent-color: var(--accent-red); width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
+
+  .terms-group { margin-bottom: 1rem; }
+  .terms-group h3 { font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .check { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.8rem; border: 1px solid var(--border); border-radius: 0.6rem; margin-bottom: 0.5rem; font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary); cursor: pointer; background: var(--bg-primary); }
+  .check input { margin-top: 0.15rem; }
+  .check:has(input:checked) { color: var(--text-primary); border-color: #e3b6ad; background: #fffaf8; }
+  .check-all { background: none; border: none; color: var(--accent-red); text-decoration: underline; cursor: pointer; padding: 0 0 0.75rem; font: inherit; font-size: 0.88rem; }
+
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.96); backdrop-filter: blur(8px); border-top: 1px solid var(--border); padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom)); z-index: 10; }
+  .bar-inner { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; }
+  .bar-total { font-size: 0.8rem; color: var(--text-muted); line-height: 1.2; }
+  .bar-total strong { display: block; font-size: 1.15rem; color: var(--text-primary); }
+  .btn { margin-left: auto; min-height: 50px; padding: 0.8rem 1.4rem; border-radius: 0.7rem; border: none; font: inherit; font-weight: 600; font-size: 1rem; cursor: pointer; background: var(--accent-red); color: #fff; }
+  .btn:hover { background: var(--accent-red-light); }
+  .btn:disabled { background: #d8c9bf; cursor: not-allowed; }
+
+  /* Licence photos */
+  .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 0.6rem; margin-bottom: 0.6rem; }
+  .photo { position: relative; aspect-ratio: 4 / 3; border-radius: 0.55rem; overflow: hidden; background: var(--bg-primary); border: 1px solid var(--border); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo button { position: absolute; top: 4px; right: 4px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(44,24,16,0.75); color: #fff; font-size: 1.1rem; line-height: 1; cursor: pointer; }
+  .add-photo { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; min-height: 52px; border: 2px dashed #d9c7b9; border-radius: 0.7rem; background: var(--bg-primary); font: inherit; font-weight: 600; color: var(--accent-red); cursor: pointer; }
+  .photo-count { font-size: 0.85rem; font-weight: 500; }
+  .photo-count.ok { color: #2f7a4b; }
+  .photo-count.need { color: var(--text-secondary); }
+
+  .field-err { color: #a33a2a; font-weight: 500; }
+  .input.bad { border-color: #c0392b; background: #fff7f5; }
+
+  .done { text-align: center; padding: 2rem 1.25rem; }
+  .done h2 { font-family: 'Fraunces', serif; margin-bottom: 0.5rem; }
+  .small { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <a class="back" href="/">&larr; Airlie Scooter Hire</a>
+    <h1>Book your scooters</h1>
+    <p>Choose how many, pick your dates, pay online and collect them from our carport. No waiting for a call back.</p>
+  </div>
+</header>
+
+<main>
+  <!-- 1. How many -->
+  <section class="card" id="stepCount">
+    <h2 class="step-title"><span class="step-num">1</span> How many scooters?</h2>
+    <div class="stepper">
+      <button type="button" id="countMinus" aria-label="One fewer scooter">&minus;</button>
+      <div class="stepper-val" aria-live="polite"><strong id="countVal">1</strong><span id="countLbl">scooter</span></div>
+      <button type="button" id="countPlus" aria-label="One more scooter">+</button>
+    </div>
+    <p class="hint">One person per scooter, unless the rider holds a valid motorcycle licence (then one passenger is allowed).</p>
+  </section>
+
+  <!-- 2. Dates -->
+  <section class="card" id="stepDates">
+    <h2 class="step-title"><span class="step-num">2</span> Pick your dates</h2>
+    <p class="hint" style="margin:-0.4rem 0 0.8rem">Tap your pickup day, then your return day. The small number on each day is how many scooters are free.</p>
+    <div class="cal-head">
+      <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">&lsaquo;</button>
+      <strong id="calTitle"></strong>
+      <button type="button" class="cal-nav" id="calNext" aria-label="Next month">&rsaquo;</button>
+    </div>
+    <div class="cal-grid" id="cal"></div>
+    <div class="cal-legend">
+      <span><i style="background:var(--bg-primary);border:1px solid var(--border)"></i>Enough free</span>
+      <span><i style="background:#f3ece6"></i>Not enough free</span>
+      <span><i style="background:var(--accent-red)"></i>Your dates</span>
+    </div>
+    <div class="sel-summary" id="selSummary"></div>
+    <p class="hint" id="timesHint"></p>
+    <div id="datesMsg"></div>
+    <div class="price" id="priceBox" hidden></div>
+  </section>
+
+  <!-- 3. Bikes -->
+  <section class="card" id="stepBike" hidden>
+    <h2 class="step-title"><span class="step-num">3</span> <span id="bikeTitle">Choose your scooter</span></h2>
+    <p class="pick-count" id="pickCount"></p>
+    <div class="bikes" id="bikes" aria-label="Available scooters"></div>
+    <div id="bikesMsg"></div>
+  </section>
+
+  <!-- 4. Delivery (optional) -->
+  <section class="card" id="stepDelivery" hidden>
+    <h2 class="step-title"><span class="step-num">4</span> Pickup &amp; return</h2>
+    <p class="hint" style="margin:-0.4rem 0 0.8rem">Collect from our carport for free, or we can bring <span class="itThem">the scooter</span> to you and pick <span class="itThem">it</span> up.</p>
+    <label class="opt"><input type="checkbox" id="optDelivery"><span><b>Deliver to me</b><small id="optDeliveryPrice"></small></span></label>
+    <label class="opt"><input type="checkbox" id="optCollection"><span><b>Pick up from me at the end</b><small id="optCollectionPrice"></small></span></label>
+    <p class="hint" id="deliveryHint" style="margin-top:0.6rem" hidden>Add your address below under “Delivery address”. We'll text you to arrange a time.</p>
+  </section>
+
+  <form id="form" novalidate>
+  <!-- 4. Details -->
+  <section class="card" id="stepDetails" hidden>
+    <h2 class="step-title"><span class="step-num">5</span> Your details</h2>
+    <p class="hint" id="groupHint" style="margin:-0.4rem 0 0.9rem" hidden>Booking for a group? Enter the details of the person who will be responsible for all the scooters.</p>
+    <div class="field"><label class="lbl" for="name">Full legal name *</label><input class="input" id="name" autocomplete="name" required></div>
+    <div class="row stack">
+      <div class="field"><label class="lbl" for="dob">Date of birth *</label><input class="input" type="date" id="dob" autocomplete="bday" required></div>
+      <div class="field"><label class="lbl" for="phone">Mobile number *</label><input class="input" type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="0412 345 678" required><p class="hint field-err" id="phoneErr" hidden></p></div>
+    </div>
+    <div class="field"><label class="lbl" for="email">Email *</label><input class="input" type="email" id="email" autocomplete="email" required><p class="hint">Your lockbox code and booking link are sent here.</p></div>
+    <div class="field"><label class="lbl" for="address" id="addressLbl">Where you're staying</label><input class="input" id="address" placeholder="e.g. Airlie Beach Hotel, Room 12"></div>
+
+    <h3 class="sub">Licence</h3>
+    <div class="row stack">
+      <div class="field"><label class="lbl" for="licCountry">Country of issue</label><input class="input" id="licCountry" placeholder="e.g. Australia"></div>
+      <div class="field"><label class="lbl" for="licNumber">Licence number *</label><input class="input" id="licNumber" required></div>
+    </div>
+    <div class="field">
+      <span class="lbl">Licence type *</span>
+      <div class="radios" id="licTypes"></div>
+    </div>
+    <div class="row stack">
+      <div class="field"><label class="lbl" for="licExpiry">Expiry date</label><input class="input" type="date" id="licExpiry"></div>
+      <div class="field"><label class="lbl" for="lic12m">Held 12+ months? *</label><select class="input" id="lic12m"><option value="">Select…</option><option>Yes</option><option>No</option></select></div>
+    </div>
+
+    <h3 class="sub">Licence photos</h3>
+    <p class="hint" style="margin:-0.4rem 0 0.7rem">Take a clear photo of the front of <span id="photoWho">your licence</span>. Make sure the name, number and expiry date can be read.</p>
+    <div class="photos" id="photos"></div>
+    <input type="file" id="photoInput" accept="image/*" multiple hidden>
+    <button type="button" class="add-photo" id="addPhoto">＋ Add licence photo</button>
+    <p class="photo-count need" id="photoCount" style="margin-top:0.5rem"></p>
+
+    <h3 class="sub">Driving history</h3>
+    <div class="field">
+      <label class="lbl" for="accidents">Any at-fault accidents in the past 5 years? *</label>
+      <select class="input" id="accidents" data-detail="accidentInfoWrap"><option value="">Select…</option><option>No</option><option>Yes</option></select>
+    </div>
+    <div class="field" id="accidentInfoWrap" hidden><label class="lbl" for="accidentInfo">Please explain</label><textarea class="input" id="accidentInfo"></textarea></div>
+    <div class="field">
+      <label class="lbl" for="restrictions">Any current driving restrictions or conditions? *</label>
+      <select class="input" id="restrictions" data-detail="restrictionInfoWrap"><option value="">Select…</option><option>No</option><option>Yes</option></select>
+    </div>
+    <div class="field" id="restrictionInfoWrap" hidden><label class="lbl" for="restrictionInfo">Please explain</label><textarea class="input" id="restrictionInfo"></textarea></div>
+  </section>
+
+  <!-- 5. Agreement -->
+  <section class="card" id="stepAgree" hidden>
+    <h2 class="step-title"><span class="step-num">6</span> Rental agreement</h2>
+    <button type="button" class="check-all" id="checkAll">Tick all boxes after reading</button>
+    <div id="terms"></div>
+    <div class="row stack">
+      <div class="field"><label class="lbl" for="signatureName">Type your full name to sign *</label><input class="input" id="signatureName" autocomplete="name" required></div>
+      <div class="field"><label class="lbl" for="signatureDate">Date signed</label><input class="input" type="date" id="signatureDate" readonly></div>
+    </div>
+    <p class="small">By continuing you agree to our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>. Payment is handled securely by Stripe.</p>
+    <div id="submitMsg"></div>
+  </section>
+  </form>
+
+  <section class="card done" id="stepDone" hidden></section>
+</main>
+
+<div class="bar" id="bar" hidden>
+  <div class="bar-inner">
+    <div class="bar-total" id="barTotal"></div>
+    <button class="btn" id="submitBtn" type="submit" form="form" disabled>Continue to payment</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const LICENCE_TYPES = ['Full car licence', 'Provisional car licence', 'Motorcycle licence', 'International licence'];
+  const LIC_LABELS = { 'Full car licence': 'Full car', 'Provisional car licence': 'Provisional', 'Motorcycle licence': 'Motorcycle', 'International licence': 'International' };
+  const money = (c) => '$' + (c / 100).toFixed(c % 100 ? 2 : 0);
+  const fmt = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+  const iso = (y, m, d) => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  const addDays = (s, n) => new Date(Date.parse(s + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10);
+
+  const state = {
+    today: new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Brisbane' }).format(new Date()),
+    fleet: 5, count: 1,
+    month: null,            // { y, m } shown in the calendar
+    free: new Map(),        // date → scooters free that day
+    loadedMonths: new Set(),
+    start: null, end: null,
+    quote: null, bikes: [], picked: [], agreementIds: [],
+    delivery: false, collection: false,
+  };
+  let calSeq = 0, availSeq = 0; // ignore out-of-date responses
+
+  const show = (el, on = true) => { el.hidden = !on; };
+  function setMsg(el, text, kind = 'err') {
+    el.innerHTML = '';
+    if (!text) return;
+    const d = document.createElement('div');
+    d.className = 'msg ' + kind;
+    d.textContent = text;
+    el.appendChild(d);
+  }
+
+  // ── Setup ──
+  const [ty, tm] = state.today.split('-').map(Number);
+  state.month = { y: ty, m: tm - 1 };
+  $('signatureDate').value = state.today;
+  $('licTypes').innerHTML = LICENCE_TYPES.map((t) =>
+    `<label class="radio"><input type="radio" name="licType" value="${t}"> ${LIC_LABELS[t]}</label>`).join('');
+  document.querySelectorAll('select[data-detail]').forEach((s) =>
+    s.addEventListener('change', () => show($(s.dataset.detail), s.value === 'Yes')));
+
+  fetch('/api/config').then((r) => r.json()).then((c) => {
+    state.fleet = Math.max(1, c.fleetSize || 1);
+    $('timesHint').textContent = `Pick up from ${c.pickup.fromTime} on your pickup day. Return by ${c.pickup.returnByTime} on your return day.`;
+    renderCount();
+  }).catch(() => {});
+
+  // ── 1. How many ──
+  function renderCount() {
+    $('countVal').textContent = state.count;
+    $('countLbl').textContent = state.count === 1 ? 'scooter' : 'scooters';
+    $('countMinus').disabled = state.count <= 1;
+    $('countPlus').disabled = state.count >= state.fleet;
+  }
+  function changeCount(delta) {
+    const n = Math.min(state.fleet, Math.max(1, state.count + delta));
+    if (n === state.count) return;
+    state.count = n;
+    renderCount();
+    // Keep the chosen dates only if they still have enough scooters every day.
+    if (state.start && state.end && firstShortDay(state.start, state.end)) clearDates();
+    renderCalendar();
+    if (state.start && state.end) loadAvailability();
+  }
+  $('countMinus').addEventListener('click', () => changeCount(-1));
+  $('countPlus').addEventListener('click', () => changeCount(1));
+
+  // ── 2. Calendar ──
+  async function loadMonth(y, m) {
+    const key = `${y}-${m}`;
+    if (state.loadedMonths.has(key)) return;
+    const from = iso(y, m, 1);
+    const to = iso(y, m, new Date(y, m + 1, 0).getDate());
+    if (to < state.today) { state.loadedMonths.add(key); return; }
+    const r = await fetch(`/api/calendar?from=${from}&to=${to}`).then((x) => x.json());
+    (r.days || []).forEach((d) => state.free.set(d.date, d.free));
+    state.loadedMonths.add(key);
+  }
+  async function ensureRange(start, end) {
+    let { y, m } = { y: +start.slice(0, 4), m: +start.slice(5, 7) - 1 };
+    const endKey = +end.slice(0, 4) * 12 + (+end.slice(5, 7) - 1);
+    while (y * 12 + m <= endKey) { await loadMonth(y, m); m++; if (m > 11) { m = 0; y++; } }
+  }
+  function firstShortDay(start, end) {
+    for (let d = start; d <= end; d = addDays(d, 1)) {
+      const f = state.free.get(d);
+      if (f !== undefined && f < state.count) return d;
+    }
+    return null;
+  }
+
+  async function renderCalendar() {
+    const { y, m } = state.month;
+    $('calTitle').textContent = new Date(y, m, 1).toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+    $('calPrev').disabled = y * 12 + m <= ty * 12 + (tm - 1);
+    $('calNext').disabled = y * 12 + m >= ty * 12 + (tm - 1) + 11;
+    const mySeq = ++calSeq;
+    drawGrid(true);
+    try { await loadMonth(y, m); } catch { /* offline — counts stay blank */ }
+    if (mySeq === calSeq) drawGrid(false);
+  }
+
+  function drawGrid(loading) {
+    const { y, m } = state.month;
+    const grid = $('cal');
+    grid.innerHTML = '';
+    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach((d) => {
+      const el = document.createElement('div'); el.className = 'cal-dow'; el.textContent = d[0] + d[1]; grid.appendChild(el);
+    });
+    const lead = (new Date(y, m, 1).getDay() + 6) % 7; // Monday first
+    for (let i = 0; i < lead; i++) { const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e); }
+    const last = new Date(y, m + 1, 0).getDate();
+    for (let day = 1; day <= last; day++) {
+      const date = iso(y, m, day);
+      const free = state.free.get(date);
+      const past = date < state.today;
+      const low = !past && free !== undefined && free < state.count;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      let cls = 'cal-day';
+      if (past) cls += ' past';
+      else if (low) cls += ' low';
+      if (loading && free === undefined) cls += ' loading';
+      if (date === state.start || date === state.end) cls += ' sel';
+      else if (state.start && state.end && date > state.start && date < state.end) cls += ' in-range';
+      btn.className = cls;
+      btn.disabled = past;
+      const freeTxt = free === undefined ? '' : (free === 0 ? 'full' : `${free} free`);
+      btn.setAttribute('aria-label', `${fmt(date)}${freeTxt ? ', ' + freeTxt : ''}`);
+      btn.innerHTML = `<span class="d">${day}</span><span class="f">${free === undefined ? '·' : (free === 0 ? 'full' : free)}</span>`;
+      if (!past) btn.addEventListener('click', () => pickDate(date));
+      grid.appendChild(btn);
+    }
+  }
+
+  $('calPrev').addEventListener('click', () => { const s = state.month; s.m--; if (s.m < 0) { s.m = 11; s.y--; } renderCalendar(); });
+  $('calNext').addEventListener('click', () => { const s = state.month; s.m++; if (s.m > 11) { s.m = 0; s.y++; } renderCalendar(); });
+
+  function shortMsg(day) {
+    const f = state.free.get(day);
+    return `Only ${f === 0 ? 'no' : f} scooter${f === 1 ? ' is' : 's are'} free on ${fmt(day)}, and you need ${state.count}. Choose dates around it, or fewer scooters.`;
+  }
+
+  async function pickDate(date) {
+    setMsg($('datesMsg'), '');
+    const free = state.free.get(date);
+    if (free !== undefined && free < state.count) return setMsg($('datesMsg'), shortMsg(date));
+    if (!state.start || state.end || date < state.start) {
+      state.start = date; state.end = null;
+      resetAfterDates();
+      drawGrid(false); renderSelSummary();
+      return;
+    }
+    await ensureRange(state.start, date);
+    const short = firstShortDay(state.start, date);
+    if (short) {
+      state.start = null; // start over so the next tap is a new pickup day
+      drawGrid(false); renderSelSummary();
+      return setMsg($('datesMsg'), shortMsg(short) + ' Tap a new pickup day.');
+    }
+    state.end = date;
+    drawGrid(false); renderSelSummary();
+    loadAvailability();
+  }
+
+  function clearDates() { state.start = state.end = null; resetAfterDates(); renderSelSummary(); }
+
+  function renderSelSummary() {
+    const el = $('selSummary');
+    if (!state.start) el.innerHTML = '';
+    else if (!state.end) el.innerHTML = `<strong>Pickup:</strong> ${fmt(state.start)}. Now tap your return day.`;
+    else {
+      const days = state.quote ? state.quote.days : null;
+      el.innerHTML = `<strong>${fmt(state.start)}</strong> → <strong>${fmt(state.end)}</strong>${days ? ` · ${plural(days, 'day')}` : ''}`;
+    }
+  }
+
+  async function loadAvailability() {
+    const mySeq = ++availSeq;
+    setMsg($('datesMsg'), 'Checking which scooters are free…', 'info');
+    try {
+      const qs = tripQuery();
+      const [avail, agr] = await Promise.all([
+        fetch('/api/availability?' + qs).then((r) => r.json()),
+        fetch('/api/agreement?' + qs).then((r) => r.json()),
+      ]);
+      if (mySeq !== availSeq) return;
+      if (avail.error) { resetAfterDates(); return setMsg($('datesMsg'), avail.error); }
+      if (!avail.enough) {
+        resetAfterDates();
+        const n = avail.bikes.length;
+        return setMsg($('datesMsg'),
+          `There ${n === 1 ? 'is' : 'are'} only ${n === 0 ? 'no' : n} scooter${n === 1 ? '' : 's'} free for the whole of those dates. ` +
+          `(Different scooters are booked on different days.) Try ${n > 0 ? plural(n, 'scooter') + ', ' : ''}shorter dates, or call us on 0478 393 479.`);
+      }
+      setMsg($('datesMsg'), '');
+      state.quote = avail.quote;
+      state.bikes = avail.bikes;
+      // Keep earlier picks that are still free, then top up in order.
+      state.picked = state.picked.filter((id) => state.bikes.some((b) => b.id === id)).slice(0, state.count);
+      // Auto-pick car-licence scooters first; over-50cc ones need a motorcycle licence.
+      const byLicence = [...state.bikes].sort((a, b) => Number(a.needs_motorcycle_licence) - Number(b.needs_motorcycle_licence));
+      for (const b of byLicence) { if (state.picked.length >= state.count) break; if (!state.picked.includes(b.id)) state.picked.push(b.id); }
+      renderSelSummary();
+      renderTripOptions();
+      renderPrice();
+      renderBikes();
+      renderTerms(agr.sections || []);
+      updateSteps();
+    } catch {
+      if (mySeq === availSeq) setMsg($('datesMsg'), 'Could not check availability. Please check your connection and try again.');
+    }
+  }
+
+  function tripQuery() {
+    return new URLSearchParams({
+      start: state.start, end: state.end, count: state.count,
+      delivery: state.delivery ? '1' : '0', collection: state.collection ? '1' : '0',
+    });
+  }
+
+  // ── 4. Delivery / collection ──
+  let termsSeq = 0;
+  async function setTrips() {
+    state.delivery = $('optDelivery').checked;
+    state.collection = $('optCollection').checked;
+    const q = state.quote;
+    if (q) {
+      q.delivery = state.delivery; q.collection = state.collection;
+      q.deliveryEach = q.deliveryFee * (Number(state.delivery) + Number(state.collection));
+      q.deliveryTotal = q.deliveryEach * q.count;
+      renderPrice(); updateSteps();
+    }
+    const need = state.delivery || state.collection;
+    show($('deliveryHint'), need);
+    $('addressLbl').textContent = need ? 'Delivery address *' : "Where you're staying";
+    $('address').placeholder = need ? 'e.g. 12 Shute Harbour Rd, Airlie Beach (unit / room no.)' : 'e.g. Airlie Beach Hotel, Room 12';
+    if (!q) return;
+    // The agreement wording includes the delivery price, so fetch it again.
+    const mySeq = ++termsSeq;
+    const agr = await fetch('/api/agreement?' + tripQuery()).then((r) => r.json()).catch(() => null);
+    if (mySeq === termsSeq && agr?.sections) renderTerms(agr.sections);
+  }
+  $('optDelivery').addEventListener('change', setTrips);
+  $('optCollection').addEventListener('change', setTrips);
+
+  function renderTripOptions() {
+    const q = state.quote; if (!q) return;
+    const each = q.count > 1 ? ` (${money(q.deliveryFee)} × ${q.count} scooters)` : '';
+    $('optDeliveryPrice').textContent = `+${money(q.deliveryFee * q.count)}${each} · on ${new Date(q.start + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })}`;
+    $('optCollectionPrice').textContent = `+${money(q.deliveryFee * q.count)}${each} · on ${new Date(q.end + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })}`;
+    document.querySelectorAll('.itThem').forEach((el, i) => { el.textContent = q.count > 1 ? (i ? 'them' : 'the scooters') : (i ? 'it' : 'the scooter'); });
+  }
+
+  function resetAfterDates() {
+    state.quote = null; state.bikes = [];
+    show($('priceBox'), false);
+    updateSteps();
+  }
+
+  function renderPrice() {
+    const q = state.quote;
+    const line = q.weeks > 0
+      ? `${plural(q.weeks, 'week')}${q.extraDays ? ` + ${plural(q.extraDays, 'day')}` : ''}`
+      : `${plural(q.days, 'day')} × ${money(q.perDay)}`;
+    const many = q.count > 1;
+    const bondNote = q.bondMethod === 'hold'
+      ? `The bond is a temporary hold on your card. It is not charged, and it is released after you return ${many ? 'the scooters' : 'the scooter'}.`
+      : `The bond is charged now and refunded to your card after you return ${many ? 'the scooters' : 'the scooter'}.`;
+    $('priceBox').innerHTML = `
+      <div class="price-row"><span>Rent per scooter (${line})</span><span>${money(q.rentEach)}</span></div>
+      ${many ? `<div class="price-row"><span>× ${q.count} scooters</span><span>${money(q.rent)}</span></div>` : ''}
+      ${q.deliveryTotal ? `<div class="price-row"><span>${q.delivery && q.collection ? 'Delivery + pick-up' : q.delivery ? 'Delivery' : 'Pick-up at the end'}</span><span>${money(q.deliveryTotal)}</span></div>` : ''}
+      ${q.bondMethod === 'hold' ? `
+      <div class="price-row total"><span>You pay today</span><span>${money(q.rent + q.deliveryTotal)}</span></div>
+      <div class="price-row"><span>Plus a bond hold on your card${many ? ` (${money(q.bondEach)} each)` : ''}</span><span>${money(q.bond)}</span></div>` : `
+      <div class="price-row"><span>Refundable bond${many ? ` (${money(q.bondEach)} each)` : ''}</span><span>${money(q.bond)}</span></div>
+      <div class="price-row total"><span>You pay today</span><span>${money(q.rent + q.deliveryTotal + q.bond)}</span></div>`}
+      <p class="price-note">${bondNote} Helmets included.</p>`;
+    show($('priceBox'));
+  }
+
+  // ── 3. Bikes ──
+  function renderBikes() {
+    const many = state.count > 1;
+    $('bikeTitle').textContent = many ? 'Choose your scooters' : 'Choose your scooter';
+    $('pickCount').textContent = many
+      ? `${state.picked.length} of ${state.count} chosen. We've picked some for you. Tap to swap.`
+      : `We've picked one for you. Tap another to swap.`;
+    const wrap = $('bikes');
+    wrap.innerHTML = '';
+    for (const b of state.bikes) {
+      const on = state.picked.includes(b.id);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bike';
+      btn.setAttribute('role', many ? 'checkbox' : 'radio');
+      btn.setAttribute('aria-checked', String(on));
+      const img = document.createElement('img');
+      img.alt = b.name; img.loading = 'lazy';
+      if (b.photo) img.src = '/' + b.photo.split('/').map(encodeURIComponent).join('/');
+      const text = document.createElement('div');
+      const num = document.createElement('div'); num.className = 'bike-num'; num.textContent = 'Bike ' + b.number;
+      const name = document.createElement('div'); name.className = 'bike-name'; name.textContent = b.name;
+      text.append(num, name);
+      if (b.needs_motorcycle_licence) {
+        const tag = document.createElement('div'); tag.className = 'bike-tag'; tag.textContent = 'Motorcycle licence needed';
+        text.append(tag);
+      }
+      const tick = document.createElement('span'); tick.className = 'bike-tick';
+      btn.append(img, text, tick);
+      btn.addEventListener('click', () => togglePick(b.id));
+      wrap.appendChild(btn);
+    }
+  }
+  function togglePick(id) {
+    setMsg($('bikesMsg'), '');
+    if (state.count === 1) state.picked = [id];
+    else if (state.picked.includes(id)) state.picked = state.picked.filter((x) => x !== id);
+    else if (state.picked.length < state.count) state.picked.push(id);
+    else return setMsg($('bikesMsg'), `You've already chosen ${state.count}. Untick one first to swap it.`, 'info');
+    renderBikes();
+    updateSteps();
+  }
+
+  // ── 4. Phone (same rule as the server: 8–15 digits, any digit style) ──
+  const PHONE_MSG = 'Please enter your mobile number with its area code, e.g. 0412 345 678 or +61 412 345 678.';
+  const phoneDigits = () => ($('phone').value.normalize('NFKC').match(/\p{Nd}/gu) || []).length;
+  function phoneOk() {
+    const n = phoneDigits(), ok = n >= 8 && n <= 15;
+    $('phone').classList.toggle('bad', !ok);
+    $('phoneErr').textContent = ok ? '' : PHONE_MSG;
+    show($('phoneErr'), !ok);
+    return ok;
+  }
+  $('phone').addEventListener('blur', () => { if ($('phone').value.trim()) phoneOk(); });
+  $('phone').addEventListener('input', () => { if ($('phone').classList.contains('bad')) phoneOk(); });
+
+  // ── 4. Licence photos ──
+  // Photos are shrunk on the phone (max 1600px JPEG) so uploads stay quick on mobile data.
+  const MAX_PHOTOS = 10;
+  state.photos = [];
+  async function shrink(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fail; i.src = url; });
+      const scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.naturalWidth * scale);
+      c.height = Math.round(img.naturalHeight * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      return c.toDataURL('image/jpeg', 0.82);
+    } finally { URL.revokeObjectURL(url); }
+  }
+  function renderPhotos() {
+    const wrap = $('photos');
+    wrap.innerHTML = '';
+    state.photos.forEach((src, i) => {
+      const d = document.createElement('div'); d.className = 'photo';
+      const img = document.createElement('img'); img.src = src; img.alt = `Licence photo ${i + 1}`;
+      const x = document.createElement('button'); x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', `Remove licence photo ${i + 1}`);
+      x.addEventListener('click', () => { state.photos.splice(i, 1); renderPhotos(); });
+      d.append(img, x); wrap.appendChild(d);
+    });
+    const need = state.count, have = state.photos.length;
+    $('photoWho').textContent = need > 1 ? `each rider's licence (${need} riders)` : 'your licence';
+    const el = $('photoCount');
+    el.textContent = have >= need ? `✓ ${have} photo${have === 1 ? '' : 's'} added` : `${have} of ${need} added${need > 1 ? ' (one per rider)' : ''}`;
+    el.className = 'photo-count ' + (have >= need ? 'ok' : 'need');
+    $('addPhoto').hidden = have >= MAX_PHOTOS;
+  }
+  $('addPhoto').addEventListener('click', () => $('photoInput').click());
+  $('photoInput').addEventListener('change', async (e) => {
+    const files = [...e.target.files].slice(0, MAX_PHOTOS - state.photos.length);
+    e.target.value = '';
+    for (const f of files) {
+      try { state.photos.push(await shrink(f)); }
+      catch { setMsg($('submitMsg'), 'One photo could not be read. Please try taking it again.'); }
+    }
+    renderPhotos();
+  });
+
+  // ── 5. Agreement ──
+  function renderTerms(sections) {
+    const checked = new Set([...document.querySelectorAll('#terms input:checked')].map((i) => i.value));
+    const box = $('terms');
+    box.innerHTML = '';
+    state.agreementIds = [];
+    for (const s of sections) {
+      const g = document.createElement('div'); g.className = 'terms-group';
+      const h = document.createElement('h3'); h.textContent = s.title; g.appendChild(h);
+      for (const it of s.items) {
+        state.agreementIds.push(it.id);
+        const l = document.createElement('label'); l.className = 'check';
+        const cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = it.id;
+        // Wording that depends on dates/price must be re-ticked if it changed.
+        cb.checked = checked.has(it.id) && !/^agree(Payment|Return|Group)$/.test(it.id);
+        const span = document.createElement('span'); span.textContent = it.text;
+        l.append(cb, span); g.appendChild(l);
+      }
+      box.appendChild(g);
+    }
+  }
+  $('checkAll').addEventListener('click', () => document.querySelectorAll('#terms input').forEach((i) => { i.checked = true; }));
+
+  function updateSteps() {
+    const hasQuote = !!state.quote;
+    const ready = hasQuote && state.picked.length === state.count;
+    show($('stepBike'), hasQuote);
+    show($('stepDelivery'), hasQuote);
+    show($('stepDetails'), hasQuote);
+    show($('stepAgree'), hasQuote);
+    show($('groupHint'), state.count > 1);
+    renderPhotos();
+    show($('bar'), hasQuote);
+    if (hasQuote) {
+      const nums = state.bikes.filter((b) => state.picked.includes(b.id)).map((b) => b.number);
+      const label = nums.length ? (nums.length === 1 ? 'Bike ' : 'Bikes ') + nums.join(', ') : 'No bikes chosen';
+      const q = state.quote;
+      $('barTotal').innerHTML = q.bondMethod === 'hold'
+        ? `${label} · ${plural(q.days, 'day')}<strong>${money(q.rent + q.deliveryTotal)}</strong>+ ${money(q.bond)} bond hold`
+        : `${label} · ${plural(q.days, 'day')}<strong>${money(q.rent + q.deliveryTotal + q.bond)}</strong>incl. ${money(q.bond)} bond`;
+    }
+    $('submitBtn').disabled = !ready;
+  }
+
+  // ── Submit ──
+  // The same booking sent twice (e.g. the first reply was lost) reuses one reservation.
+  let submitKey = '', submitSig = '';
+  function newKey() {
+    const a = new Uint8Array(16); crypto.getRandomValues(a); // works on plain http too, unlike randomUUID
+    return [...a].map((x) => x.toString(16).padStart(2, '0')).join('');
+  }
+  $('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const v = (id) => $(id).value.trim();
+    const licType = document.querySelector('input[name="licType"]:checked');
+    const accepted = [...document.querySelectorAll('#terms input:checked')].map((i) => i.value);
+
+    let problem = null, focus = null;
+    if (state.picked.length !== state.count) { problem = `Please choose ${plural(state.count, 'scooter')}.`; }
+    else if (!v('name') || !v('dob') || !v('phone') || !v('email')) { problem = 'Please fill in all required details.'; focus = ['name', 'dob', 'phone', 'email'].find((id) => !v(id)); }
+    else if (!phoneOk()) { problem = PHONE_MSG; focus = 'phone'; }
+    else if ((state.delivery || state.collection) && v('address').length < 5) { problem = 'Please enter the address for delivery / pick-up.'; focus = 'address'; }
+    else if (!v('licNumber') || !licType || !v('lic12m')) { problem = 'Please complete the licence details.'; focus = !v('licNumber') ? 'licNumber' : (!licType ? null : 'lic12m'); }
+    else if (state.photos.length < state.count) { problem = state.count > 1 ? `Please add a licence photo for each rider (${state.count} needed).` : 'Please add a photo of your licence.'; focus = 'addPhoto'; }
+    else if (!v('accidents') || !v('restrictions')) { problem = 'Please answer the driving history questions.'; focus = !v('accidents') ? 'accidents' : 'restrictions'; }
+    else if (state.agreementIds.some((id) => !accepted.includes(id))) { problem = 'Please read and tick every box in the rental agreement.'; }
+    else if (!v('signatureName')) { problem = 'Please type your full name to sign.'; focus = 'signatureName'; }
+    if (problem) {
+      setMsg($('submitMsg'), problem);
+      if (focus) $(focus).focus(); else $('submitMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const sig = JSON.stringify([state.quote.start, state.quote.end, state.picked, v('email'), state.delivery, state.collection]);
+    if (sig !== submitSig) { submitSig = sig; submitKey = newKey(); }
+    const btn = $('submitBtn');
+    btn.disabled = true; btn.textContent = 'Going to payment…';
+    setMsg($('submitMsg'), '');
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          start: state.quote.start, end: state.quote.end, bikeIds: state.picked,
+          name: v('name'), dob: v('dob'), phone: v('phone'), email: v('email'), address: v('address'),
+          licCountry: v('licCountry'), licNumber: v('licNumber'), licType: licType.value,
+          licExpiry: v('licExpiry'), lic12m: v('lic12m'), accidents: v('accidents'), accidentInfo: v('accidentInfo'),
+          restrictions: v('restrictions'), restrictionInfo: v('restrictionInfo'),
+          accepted, signatureName: v('signatureName'), signatureDate: v('signatureDate'),
+          licencePhotos: state.photos, requestKey: submitKey,
+          delivery: state.delivery, collection: state.collection,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setMsg($('submitMsg'), data.error || 'Something went wrong. Please try again or call us.');
+        if (res.status === 409) {
+          state.loadedMonths.clear(); state.free.clear();
+          await ensureRange(state.start, state.end);
+          drawGrid(false);
+          loadAvailability();
+        }
+        return;
+      }
+      if (data.checkoutUrl) { window.location.href = data.checkoutUrl; return; }
+      // Until online payment is switched on (next step), show a holding message.
+      ['stepCount', 'stepDates', 'stepBike'].forEach((id) => show($(id), false));
+      $('form').hidden = true; show($('bar'), false);
+      const done = $('stepDone');
+      done.innerHTML = '<h2>Scooters reserved</h2><p class="small"></p>';
+      done.querySelector('p').textContent = `${data.bikeNumbers.length === 1 ? 'Bike' : 'Bikes'} ${data.bikeNumbers.join(', ')} ${data.bikeNumbers.length === 1 ? 'is' : 'are'} held for you for 30 minutes. Online payment is not switched on yet (booking ref ${data.bookingId.slice(0, 8)}).`;
+      show(done);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      setMsg($('submitMsg'), 'Could not reach the server. Please check your connection and press Continue again — your scooters stay held for you.');
+    } finally {
+      btn.textContent = 'Continue to payment';
+      updateSteps();
+    }
+  });
+
+  renderCount();
+  renderCalendar();
+})();
+</script>
+</body>
+</html>

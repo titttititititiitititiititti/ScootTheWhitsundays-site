@@ -1,0 +1,13 @@
+{
+  "name": "Airlie Scooter Hire Admin",
+  "short_name": "ASH Admin",
+  "start_url": "/admin",
+  "scope": "/admin",
+  "display": "standalone",
+  "background_color": "#3d1832",
+  "theme_color": "#3d1832",
+  "icons": [
+    { "src": "/Static/favicon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/Static/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
