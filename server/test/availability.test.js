@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 process.env.LOCAL_DB_DIR = ':memory:';
-delete process.env.DATABASE_URL;
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL; else delete process.env.DATABASE_URL;
 const { migrate, query } = await import('../src/db.js');
 const { availableBikes, freePerDay } = await import('../src/availability.js');
 

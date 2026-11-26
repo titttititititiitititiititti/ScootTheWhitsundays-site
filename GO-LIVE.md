@@ -24,8 +24,10 @@ Your current site stays live and untouched until step 6. Do the steps in order.
   | `OWNER_NOTIFY_EMAIL` | your email | Where booking and rent-due emails go |
   | `ADMIN_PIN` | your admin PIN | Your choice (same as in `server/.env`) |
 
-- These are filled in automatically: `DATA_DIR`, `PUBLIC_BASE_URL`, `EMAIL_FROM`, `NODE_VERSION`, and `SESSION_SECRET` (random).
-- Cost: Starter web service about US$7/month plus a 5 GB disk about US$1.25/month. The disk is where bookings and trip videos are stored.
+- These are filled in automatically: `DATABASE_URL`, `DATA_DIR`, `PUBLIC_BASE_URL`, `EMAIL_FROM`, `NODE_VERSION`, and `SESSION_SECRET` (random).
+- It creates two things:
+  - the web service: Starter, about US$7/month, plus a 5 GB disk for videos and photos at about US$1.25/month;
+  - a Postgres database: Basic 256 MB, about US$6/month, which holds bookings, prices and rentals and is backed up daily.
 - Click **Apply**. Wait for the deploy to show **Live**. Note the address it gives you, like `https://airlie-scooter-hire.onrender.com`.
 
 ## 4. Point Stripe at the new server
@@ -70,7 +72,7 @@ Your current site stays live and untouched until step 6. Do the steps in order.
 | `PUBLIC_BASE_URL` | yes | Links in emails and Stripe return pages |
 | `DATA_DIR` | yes | `/var/data`, the disk |
 | `NODE_VERSION` | yes | `24` |
-| `DATABASE_URL` | no | Only if you ever move to a managed Postgres |
+| `DATABASE_URL` | yes | Filled in automatically from the Render database |
 
 ## If something goes wrong
 - Booking site broken after step 6: put the domain back on the old static site (step 6 in reverse). The old site comes back as it was.

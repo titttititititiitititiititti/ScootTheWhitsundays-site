@@ -8,7 +8,7 @@ process.env.LOCAL_DB_DIR = ':memory:';
 process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'ash-mail-'));
 process.env.OWNER_NOTIFY_EMAIL = 'owner@example.com';
 process.env.PUBLIC_BASE_URL = 'https://airliescooterhire.test';
-delete process.env.DATABASE_URL;
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL; else delete process.env.DATABASE_URL;
 delete process.env.RESEND_API_KEY;
 const { migrate, query } = await import('../src/db.js');
 const { setEmailSinkForTests } = await import('../src/email.js');

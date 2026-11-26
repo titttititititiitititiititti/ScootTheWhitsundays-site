@@ -8,7 +8,7 @@ process.env.LOCAL_DB_DIR = ':memory:';
 process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'ash-admin-'));
 process.env.ADMIN_PIN = '1357';
 process.env.SESSION_SECRET = 'test-secret-test-secret-test-secret';
-delete process.env.DATABASE_URL;
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL; else delete process.env.DATABASE_URL;
 delete process.env.STRIPE_SECRET_KEY;
 const { migrate, query } = await import('../src/db.js');
 const { createApp } = await import('../src/app.js');

@@ -14,13 +14,17 @@ services:
     healthCheckPath: /api/health
     disk:
       name: data
-      mountPath: /var/data   # bookings database + trip videos live here
+      mountPath: /var/data   # trip videos and licence photos live here
       sizeGB: 5
     envVars:
       - key: NODE_VERSION
         value: "24"
       - key: DATA_DIR
         value: /var/data
+      - key: DATABASE_URL
+        fromDatabase:
+          name: airlie-scooter-db
+          property: connectionString
       - key: PUBLIC_BASE_URL
         value: https://airliescooterhire.com
       - key: EMAIL_FROM
@@ -37,3 +41,13 @@ services:
         sync: false
       - key: ADMIN_PIN
         sync: false
+
+# Bookings, prices and long-term rentals are stored here. (The built-in database
+# needed more memory than the Starter plan's 512MB.) Render backs this up daily.
+databases:
+  - name: airlie-scooter-db
+    plan: basic-256mb
+    region: singapore
+    databaseName: scooters
+    user: scooters
+    ipAllowList: []          # only reachable from your Render services

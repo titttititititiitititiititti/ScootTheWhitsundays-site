@@ -29,13 +29,18 @@ async function init() {
     const pg = (await import('pg')).default;
     pg.types.setTypeParser(DATE_OID, keepDateAsString);
     pg.types.setTypeParser(20, (v) => Number(v)); // count(*) / bigint → number
-    const local = /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL);
+    // Render's *internal* database address is a bare name like "dpg-abc123-a" (private
+    // network, no SSL); external addresses have a full domain and need SSL.
+    const host = new URL(process.env.DATABASE_URL).hostname;
+    const useSsl = host.includes('.') && !/^(localhost|127\.0\.0\.1)$/.test(host);
     const pool = new pg.Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: local ? false : { rejectUnauthorized: false },
+      ssl: useSsl ? { rejectUnauthorized: false } : false,
+      max: 5,
     });
     impl = {
       kind: 'postgres',
+      close: () => pool.end(),
       query: async (text, params) => (await pool.query(text, params)).rows,
       exec: async (text) => { await pool.query(text); },
       tx: async (fn) => {
@@ -57,7 +62,12 @@ async function init() {
     const { PGlite } = await import('@electric-sql/pglite');
     const dir = process.env.LOCAL_DB_DIR || path.join(dataDir(), 'db');
     if (dir !== ':memory:') await mkdir(path.dirname(dir), { recursive: true });
-    const db = new PGlite(dir === ':memory:' ? undefined : dir);
+    // Postgres' default 128MB cache is far more than this small database needs and
+    // pushes the server past Render Starter's 512MB, so keep its memory small.
+    const lowMemory = ['-c', 'shared_buffers=16MB', '-c', 'temp_buffers=2MB', '-c', 'wal_buffers=1MB', '-c', 'work_mem=2MB', '-c', 'maintenance_work_mem=8MB'];
+    const db = new PGlite(dir === ':memory:' ? undefined : dir, {
+      startParams: [...(PGlite.defaultStartParams || []), ...lowMemory],
+    });
     // Passed on every query: this PGlite version ignores parsers given to the constructor.
     const opts = { parsers: { [DATE_OID]: keepDateAsString, 20: (v) => Number(v) } };
     impl = {

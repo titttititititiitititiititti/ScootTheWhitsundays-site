@@ -9,7 +9,7 @@ process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'ash-lt-'));
 process.env.ADMIN_PIN = '1357';
 process.env.SESSION_SECRET = 'test-secret-test-secret-test-secret';
 process.env.OWNER_NOTIFY_EMAIL = 'owner@example.com';
-delete process.env.DATABASE_URL;
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL; else delete process.env.DATABASE_URL;
 delete process.env.STRIPE_SECRET_KEY;
 delete process.env.RESEND_API_KEY;
 const { migrate, query } = await import('../src/db.js');

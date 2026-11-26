@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 process.env.LOCAL_DB_DIR = ':memory:';
 process.env.DATA_DIR = (await import('node:fs')).mkdtempSync((await import('node:path')).join((await import('node:os')).tmpdir(), 'ash-test-'));
 delete process.env.STRIPE_SECRET_KEY;
-delete process.env.DATABASE_URL;
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL; else delete process.env.DATABASE_URL;
 const { migrate, query } = await import('../src/db.js');
 const { createApp } = await import('../src/app.js');
 const { todayLocal } = await import('../src/pricing.js');
