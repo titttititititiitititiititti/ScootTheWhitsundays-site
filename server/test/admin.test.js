@@ -1,4 +1,4 @@
-﻿import { test } from 'node:test';
+import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -6,7 +6,7 @@ import path from 'node:path';
 
 process.env.LOCAL_DB_DIR = ':memory:';
 process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'ash-admin-'));
-process.env.ADMIN_PIN = '2703';
+process.env.ADMIN_PIN = '1357';
 process.env.SESSION_SECRET = 'test-secret-test-secret-test-secret';
 delete process.env.DATABASE_URL;
 delete process.env.STRIPE_SECRET_KEY;
@@ -37,9 +37,9 @@ const bikeId = async (n) => (await query('select id from bikes where number = $1
 test('PIN login: wrong PINs are limited, the right one gives a session cookie', async () => {
   assert.equal((await api('/overview', { auth: false })).status, 401);
   for (let i = 0; i < 5; i++) assert.equal((await api('/login', { method: 'POST', body: { pin: '1111' } })).status, 401);
-  assert.equal((await api('/login', { method: 'POST', body: { pin: '2703' } })).status, 429, 'locked after 5 wrong tries');
+  assert.equal((await api('/login', { method: 'POST', body: { pin: '1357' } })).status, 429, 'locked after 5 wrong tries');
   resetLoginLimitsForTests();
-  const ok = await api('/login', { method: 'POST', body: { pin: '2703' } });
+  const ok = await api('/login', { method: 'POST', body: { pin: '1357' } });
   assert.equal(ok.status, 200);
   const set = ok.headers.get('set-cookie');
   assert.match(set, /HttpOnly/);

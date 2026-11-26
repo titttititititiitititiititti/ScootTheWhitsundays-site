@@ -7,7 +7,7 @@ services:
     runtime: node
     plan: starter            # needed for the disk below (free plans can't keep data)
     region: singapore        # closest Render region to Airlie Beach
-    branch: main
+    branch: self-service-booking   # switch to main once the domain has moved over
     rootDir: server
     buildCommand: npm ci
     startCommand: npm run start:render

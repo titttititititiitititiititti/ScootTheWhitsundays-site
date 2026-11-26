@@ -6,7 +6,7 @@ import path from 'node:path';
 
 process.env.LOCAL_DB_DIR = ':memory:';
 process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'ash-lt-'));
-process.env.ADMIN_PIN = '2703';
+process.env.ADMIN_PIN = '1357';
 process.env.SESSION_SECRET = 'test-secret-test-secret-test-secret';
 process.env.OWNER_NOTIFY_EMAIL = 'owner@example.com';
 delete process.env.DATABASE_URL;
@@ -34,7 +34,7 @@ const today = todayLocal();
 let cookie = '';
 const api = async (p, { method = 'GET', body } = {}) => {
   if (!cookie) {
-    const r = await fetch(base + '/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: '2703' }) });
+    const r = await fetch(base + '/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: '1357' }) });
     cookie = r.headers.get('set-cookie').split(';')[0];
   }
   return fetch(base + '/api/admin' + p, { method, headers: { Cookie: cookie, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined });
