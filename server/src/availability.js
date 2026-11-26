@@ -68,6 +68,16 @@ export async function freePerDay(from, to, q = query) {
   );
 }
 
+/** Every scooter and whether it's free today, for the home page's "Currently booked" badges.
+ *  Only names and a yes/no: never why it's busy or who has it. */
+export async function fleetToday(today, q = query) {
+  return q(
+    `select bikes.name, (bikes.status = 'available' and not ${BIKE_BUSY}) as free
+       from bikes order by bikes.number`,
+    [today, today],
+  );
+}
+
 /** Scooters in the fleet (not retired): the most anyone can pick in step 1. The calendar shows what is actually free. */
 export async function fleetSize(q = query) {
   return (await q(`select count(*) as n from bikes where status = 'available'`))[0].n;

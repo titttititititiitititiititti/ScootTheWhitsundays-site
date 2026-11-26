@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { pricing, bond, booking } from '../config.js';
 import { quote, isIsoDate, todayLocal, dayDiff } from '../pricing.js';
 import { getPricing } from '../settings.js';
-import { availableBikes, freePerDay, fleetSize } from '../availability.js';
+import { availableBikes, freePerDay, fleetSize, fleetToday } from '../availability.js';
 
 const r = Router();
 
@@ -36,7 +36,13 @@ r.get('/calendar', async (req, res) => {
   res.json({ days: await freePerDay(from, to) });
 });
 
-// GET /api/availability?start=&end=&count= → quote + bikes free for the whole period
+// GET /api/fleet-today â†’ [{ name, free }] for the home page's "Currently booked" badges
+r.get('/fleet-today', async (_req, res) => {
+  res.set('Cache-Control', 'public, max-age=60');
+  res.json({ bikes: await fleetToday(todayLocal()) });
+});
+
+// GET /api/availability?start=&end=&count=→ quote + bikes free for the whole period
 r.get('/availability', async (req, res) => {
   const q = quote(String(req.query.start || ''), String(req.query.end || ''), req.query.count || 1, new Date(), tripOpts(req.query));
   if (q.error) return res.status(400).json({ error: q.error });

@@ -122,34 +122,6 @@
             {
                 "@type": "Product",
                 "position": 2,
-                "name": "Red Devil 50cc Moped Rental",
-                "description": "Nimble 50cc moped, lightweight and fun. Helmets included. Car licence OK.",
-                "image": "Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png",
-                "offers": {
-                    "@type": "Offer",
-                    "priceCurrency": "AUD",
-                    "price": "60",
-                    "unitCode": "DAY",
-                    "availability": "https://schema.org/InStock"
-                }
-            },
-            {
-                "@type": "Product",
-                "position": 3,
-                "name": "SYM Mio 50cc Moped Rental",
-                "description": "Stylish 50cc moped, comfortable for coastal cruising. Helmets included. Car licence OK.",
-                "image": "Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png",
-                "offers": {
-                    "@type": "Offer",
-                    "priceCurrency": "AUD",
-                    "price": "60",
-                    "unitCode": "DAY",
-                    "availability": "https://schema.org/InStock"
-                }
-            },
-            {
-                "@type": "Product",
-                "position": 4,
                 "name": "Kymco Super 8 50cc Moped Rental",
                 "description": "Sporty 50cc moped with bold styling and automatic transmission. Helmets included. Car licence OK. Delivery available in Airlie Beach.",
                 "image": "Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png",
@@ -163,7 +135,7 @@
             },
             {
                 "@type": "Product",
-                "position": 5,
+                "position": 3,
                 "name": "Kymco Agility 50cc Moped Rental",
                 "description": "Lightweight and agile 50cc moped, perfect for exploring Airlie Beach. Helmets included. Car licence OK. Delivery available.",
                 "image": "Static/Kymco Agility 50cc/ChatGPT Image May 19, 2026, 11_28_19 AM.png",
@@ -1505,16 +1477,6 @@
                 <img src="Static/Kymco like 50cc/Red scooter at sunset by the beach.png" alt="Kymco Like 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
             </article>
             <article>
-                <h4>Red Devil 50cc — Moped Rental Airlie Beach</h4>
-                <p>Nimble 50cc moped with lightweight handling. Helmets included. $60/day ($70 for a single day). Car licence OK. Delivery available in Airlie Beach.</p>
-                <img src="Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png" alt="Red Devil 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
-            </article>
-            <article>
-                <h4>SYM Mio 50cc — Moped Rental Airlie Beach</h4>
-                <p>Stylish 50cc moped for cruising the Whitsunday coast. Helmets included. $60/day ($70 for a single day). Car licence OK. Delivery available in Airlie Beach.</p>
-                <img src="Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png" alt="SYM Mio 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
-            </article>
-            <article>
                 <h4>Kymco Super 8 50cc — Moped Rental Airlie Beach</h4>
                 <p>Sporty 50cc moped with bold styling and easy automatic transmission. Helmets included. $60/day ($70 for a single day). Car licence OK. Delivery available in Airlie Beach.</p>
                 <img src="Static/Kymco Super 8 50cc/ChatGPT Image May 19, 2026, 11_34_54 AM.png" alt="Kymco Super 8 50cc moped for hire in Airlie Beach, Whitsundays" width="400" loading="lazy">
@@ -1942,39 +1904,6 @@
                 bookedDates: []
             },
             {
-                id: '2',
-                category: 'moped',
-                name: 'Red Devil 50cc',
-                description: 'Nimble and fun to ride around Airlie Beach. Lightweight, easy handling, and plenty of character. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Delivery and pick-up available ($10 each way).',
-                image: 'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
-                gallery: [
-                    'Static/Red Devil 50cc/c350cd0b-18d8-41d2-9152-ba48e7eb1722.png',
-                    'Static/Red Devil 50cc/68b9e7bb-73f1-407c-bfe6-af64bcd3787e.png',
-                    'Static/Red Devil 50cc/5102254a-8c02-48ef-a597-96c55a5c381c.jpg',
-                    'Static/Red Devil 50cc/2f52d454-1664-48d2-be9b-2d7ccf57495b.jpg',
-                    'Static/Red Devil 50cc/c071ca9d-ba0e-44c6-8d78-361d0e102218.jpg'
-                ],
-                dailyPrice: 45,
-                weeklyPrice: 250,
-                available: true,
-                bookedDates: []
-            },
-            {
-                id: '3',
-                category: 'moped',
-                name: 'SYM Mio 50cc',
-                description: 'Stylish and comfortable with a smooth ride. Perfect for cruising the coast and exploring at your own pace. Helmets included. About $5 to refuel. 50cc — great for one rider, not suitable for two. Delivery and pick-up available ($10 each way).',
-                image: 'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
-                gallery: [
-                    'Static/SYM Mio 50cc/Lavender scooter by the sunset shoreline.png',
-                    'Static/SYM Mio 50cc/2ccdb708-bc5b-4a00-a380-d8c2c192bdc2.png'
-                ],
-                dailyPrice: 45,
-                weeklyPrice: 250,
-                available: true,
-                bookedDates: []
-            },
-            {
                 id: '4',
                 category: 'moped',
                 name: 'Kymco Super 8 50cc',
@@ -2008,6 +1937,23 @@
         // Prices come from the booking system (set in the admin page), so this page
         // always matches what customers pay. These are only used if that can't load.
         const livePrices = { daily: 60, oneDay: 70, weekly: 0, delivery: 10 };
+
+        // Which models have a scooter free today (booked, long-term or off for repair = not free).
+        // Matched by name: a card shows "Currently booked" only when every scooter of that model
+        // is taken today. If this can't load, every card just shows "Available" like before.
+        fetch('/api/fleet-today')
+            .then(r => (r.ok ? r.json() : null))
+            .then(d => {
+                if (!d || !Array.isArray(d.bikes)) return;
+                for (const p of products) {
+                    const key = p.name.toLowerCase();
+                    const mine = d.bikes.filter(b => String(b.name).toLowerCase().startsWith(key));
+                    if (mine.length) p.bookedNow = !mine.some(b => b.free);
+                }
+                renderAll();
+                if (detailProductId) openDetailModal(detailProductId);
+            })
+            .catch(() => {});
         fetch('/api/config')
             .then(r => (r.ok ? r.json() : null))
             .then(c => {
@@ -2063,11 +2009,17 @@
                 ? `<img src="${product.image}" alt="${product.name} — available for rent in Airlie Beach" loading="lazy">`
                 : '🛵';
 
-            const availBadge = `<div class="availability-badge ${product.available ? 'available' : 'unavailable'}">${product.available ? 'Available' : 'Unavailable'}</div>`;
+            const availBadge = !product.available
+                ? `<div class="availability-badge unavailable">Unavailable</div>`
+                : product.bookedNow
+                    ? `<div class="availability-badge unavailable">Currently booked</div>`
+                    : `<div class="availability-badge available">Available</div>`;
 
-            const bookBtn = product.available
-                ? `<a class="btn btn-primary" href="/book" onclick="event.stopPropagation();">Book Now</a>`
-                : `<span class="btn btn-disabled">Currently Unavailable</span>`;
+            const bookBtn = !product.available
+                ? `<span class="btn btn-disabled">Currently Unavailable</span>`
+                : product.bookedNow
+                    ? `<a class="btn btn-secondary" href="/book" onclick="event.stopPropagation();">Check other dates</a>`
+                    : `<a class="btn btn-primary" href="/book" onclick="event.stopPropagation();">Book Now</a>`;
 
             return `
                 <div class="product-card" onclick="openDetailModal('${product.id}')">
@@ -2104,9 +2056,11 @@
             document.getElementById('detailPricing').innerHTML = priceTags();
 
             const canBook = p.category === 'moped' ? p.available : true;
-            const bookBtn = canBook
-                ? `<a class="btn btn-primary" href="/book">Book Now</a>`
-                : `<span class="btn btn-disabled">Currently Unavailable</span>`;
+            const bookBtn = !canBook
+                ? `<span class="btn btn-disabled">Currently Unavailable</span>`
+                : p.bookedNow
+                    ? `<a class="btn btn-secondary" href="/book">Currently booked: check other dates</a>`
+                    : `<a class="btn btn-primary" href="/book">Book Now</a>`;
             document.getElementById('detailActions').innerHTML = `
                 ${bookBtn}
                 <a href="tel:+610478393479" class="btn btn-call"><span class="phone-label">Call Now!</span><span class="phone-number">Call Now!</span></a>`;

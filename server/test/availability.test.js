@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 process.env.LOCAL_DB_DIR = ':memory:';
 if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL; else delete process.env.DATABASE_URL;
 const { migrate, query } = await import('../src/db.js');
-const { availableBikes, freePerDay } = await import('../src/availability.js');
+const { availableBikes, freePerDay, fleetToday } = await import('../src/availability.js');
 
 await migrate();
 await query(`insert into bikes (number, name) values (1,'A'),(2,'B'),(3,'C')`);
@@ -64,4 +64,18 @@ test('free count per day, and why the whole period is checked separately', async
     { date: '2027-03-03', free: 2 },
   ]);
   assert.deepEqual(await nums('2027-03-01', '2027-03-02'), []);
+});
+
+test('fleet today: names and free/busy only (booking, long-term, repair all count as busy)', async () => {
+  // 2027-03-01: bike 1 booked (above), bike 2 free, bike 3 in repair.
+  assert.deepEqual(await fleetToday('2027-03-01'), [
+    { name: 'A', free: false },
+    { name: 'B', free: true },
+    { name: 'C', free: false },
+  ]);
+  await query(`insert into long_term_rentals (bike_id, renter_name, weekly_rate, start_date)
+               select id, 'R', 15000, '2027-02-20' from bikes where number = 2`);
+  assert.equal((await fleetToday('2027-03-01'))[1].free, false);
+  assert.equal((await fleetToday('2027-02-19'))[1].free, true);
+  assert.deepEqual(Object.keys((await fleetToday('2027-03-01'))[0]).sort(), ['free', 'name']);
 });
