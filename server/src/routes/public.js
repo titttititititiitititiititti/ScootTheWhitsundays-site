@@ -3,6 +3,8 @@ import { pricing, bond, booking } from '../config.js';
 import { quote, isIsoDate, todayLocal, dayDiff } from '../pricing.js';
 import { getPricing } from '../settings.js';
 import { availableBikes, freePerDay, fleetSize, fleetToday } from '../availability.js';
+import { track, sourceFrom } from '../visitors.js';
+import { rateLimit } from '../rateLimit.js';
 
 const r = Router();
 
@@ -48,6 +50,19 @@ r.get('/availability', async (req, res) => {
   if (q.error) return res.status(400).json({ error: q.error });
   const bikes = await availableBikes(q.start, q.end);
   res.json({ quote: q, bikes, enough: bikes.length >= q.count });
+  // Only counts as "saw a price" when the booking page asked (not other callers).
+  if (req.query.view === '1') {
+    track(req, 'price_seen', { start: q.start, end: q.end, days: q.days, scooters: q.count, amount: q.rent + q.deliveryTotal });
+  }
+});
+
+// POST /api/track { kind: 'visit' | 'book_open', ref, utm } (sent by the home and booking pages)
+r.post('/track', rateLimit({ windowMs: 60 * 1000, max: 30 }), (req, res) => {
+  const kind = req.body?.kind;
+  if (kind === 'visit' || kind === 'book_open') {
+    track(req, kind, { source: sourceFrom(req.body?.utm, req.body?.ref, req.hostname) });
+  }
+  res.status(204).end();
 });
 
 /** ?delivery=1&collection=1 → { delivery, collection } */

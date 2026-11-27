@@ -7,6 +7,8 @@ import { getPricing, savePricing } from '../settings.js';
 import { uploadsRoot } from '../uploads.js';
 import { adminEnabled, checkPin, isAdmin, startSession, endSession, requireAdmin } from '../adminAuth.js';
 import { currentRentals, markPaid, unmarkPaid } from '../longTerm.js';
+import { clientIp } from '../rateLimit.js';
+import { stats as visitorStats, recentPriceChecks } from '../visitors.js';
 
 const r = Router();
 const PAID = `('confirmed', 'active', 'returned', 'bond_released')`;
@@ -27,14 +29,14 @@ r.get('/status', (req, res) => res.json({ enabled: adminEnabled(), loggedIn: isA
 r.post('/login', (req, res) => {
   if (!adminEnabled()) return res.status(503).json({ error: 'Admin is switched off: set ADMIN_PIN on the server.' });
   const now = Date.now();
-  if (tooMany(req.ip, now)) return res.status(429).json({ error: 'Too many wrong PINs. Try again in 15 minutes.' });
+  if (tooMany(clientIp(req), now)) return res.status(429).json({ error: 'Too many wrong PINs. Try again in 15 minutes.' });
   if (!checkPin(String(req.body?.pin ?? ''))) {
-    fails.set(req.ip, [...(fails.get(req.ip) || []).filter((t) => now - t < WINDOW), now]);
+    fails.set(clientIp(req), [...(fails.get(clientIp(req)) || []).filter((t) => now - t < WINDOW), now]);
     globalFails.push(now);
-    console.warn(`[admin] wrong PIN from ${req.ip}`);
+    console.warn(`[admin] wrong PIN from ${clientIp(req)}`);
     return res.status(401).json({ error: 'Wrong PIN' });
   }
-  fails.delete(req.ip);
+  fails.delete(clientIp(req));
   startSession(req, res);
   res.json({ ok: true });
 });
@@ -132,6 +134,15 @@ r.get('/overview', async (_req, res) => {
 });
 
 // ── One booking in full (licence details, photos, videos) ──
+// GET /visitors?days=1|7|30 → funnel, sources, hire lengths and recent price checks
+r.get('/visitors', async (req, res) => {
+  const days = [1, 7, 30].includes(Number(req.query.days)) ? Number(req.query.days) : 1;
+  const today = todayLocal();
+  const from = new Date(Date.parse(today + 'T00:00:00Z') - (days - 1) * 86400000).toISOString().slice(0, 10);
+  const [s, recent] = await Promise.all([visitorStats(from, today), recentPriceChecks(from, today)]);
+  res.json({ days, ...s, recent });
+});
+
 r.get('/bookings/:id', async (req, res) => {
   if (!/^[0-9a-f-]{36}$/.test(req.params.id)) return res.status(404).json({ error: 'Not found' });
   const [b] = await query('select * from bookings where id = $1', [req.params.id]);

@@ -516,6 +516,17 @@
             box-shadow: 0 4px 12px rgba(192,57,43,0.3);
         }
 
+        .btn-book {
+            background: #2f8a3e;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-book:hover {
+            background: #38a04a;
+            box-shadow: 0 4px 12px rgba(47,138,62,0.3);
+        }
+
         .btn-call {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -1938,6 +1949,12 @@
         // always matches what customers pay. These are only used if that can't load.
         const livePrices = { daily: 60, oneDay: 70, weekly: 0, delivery: 10 };
 
+        // Anonymous visitor count (no cookies or personal details) — see admin → Visitors.
+        try {
+            fetch('/api/track', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ kind: 'visit', ref: document.referrer, utm: new URLSearchParams(location.search).get('utm_source') }) }).catch(() => {});
+        } catch (e) {}
+
         // Which models have a scooter free today (booked, long-term or off for repair = not free).
         // Matched by name: a card shows "Currently booked" only when every scooter of that model
         // is taken today. If this can't load, every card just shows "Available" like before.
@@ -2018,8 +2035,8 @@
             const bookBtn = !product.available
                 ? `<span class="btn btn-disabled">Currently Unavailable</span>`
                 : product.bookedNow
-                    ? `<a class="btn btn-secondary" href="/book" onclick="event.stopPropagation();">Check other dates</a>`
-                    : `<a class="btn btn-primary" href="/book" onclick="event.stopPropagation();">Book Now</a>`;
+                    ? `<a class="btn btn-primary" href="/book" onclick="event.stopPropagation();">Check availability</a>`
+                    : `<a class="btn btn-book" href="/book" onclick="event.stopPropagation();">Book Now</a>`;
 
             return `
                 <div class="product-card" onclick="openDetailModal('${product.id}')">
@@ -2059,8 +2076,8 @@
             const bookBtn = !canBook
                 ? `<span class="btn btn-disabled">Currently Unavailable</span>`
                 : p.bookedNow
-                    ? `<a class="btn btn-secondary" href="/book">Currently booked: check other dates</a>`
-                    : `<a class="btn btn-primary" href="/book">Book Now</a>`;
+                    ? `<a class="btn btn-primary" href="/book">Check availability</a>`
+                    : `<a class="btn btn-book" href="/book">Book Now</a>`;
             document.getElementById('detailActions').innerHTML = `
                 ${bookBtn}
                 <a href="tel:+610478393479" class="btn btn-call"><span class="phone-label">Call Now!</span><span class="phone-number">Call Now!</span></a>`;

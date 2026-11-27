@@ -2,6 +2,7 @@ import { createApp } from './app.js';
 import { migrate, closeDb, dataDir } from './db.js';
 import { loadSettings } from './settings.js';
 import { startRentReminderSweep } from './longTerm.js';
+import { startVisitorSweeps } from './visitors.js';
 import { setOnConfirmed } from './payments.js';
 import { onBookingConfirmed, startEmailRetrySweep } from './notify.js';
 
@@ -11,6 +12,7 @@ await loadSettings();
 setOnConfirmed(onBookingConfirmed);
 startEmailRetrySweep();
 startRentReminderSweep();
+startVisitorSweeps();
 if (!process.env.RESEND_API_KEY) console.log('[email] RESEND_API_KEY not set: emails are saved to the outbox folder instead of sent');
 const server = createApp().listen(port, () => {
   console.log(`[server] database: ${kind === 'pglite' ? `embedded, stored in ${dataDir()}` : 'Postgres (DATABASE_URL)'}`);

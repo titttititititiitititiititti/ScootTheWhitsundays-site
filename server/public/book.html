@@ -327,6 +327,12 @@
   document.querySelectorAll('select[data-detail]').forEach((s) =>
     s.addEventListener('change', () => show($(s.dataset.detail), s.value === 'Yes')));
 
+  // Anonymous visitor count (no cookies or personal details) — see admin → Visitors.
+  try {
+    fetch('/api/track', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: 'book_open', ref: document.referrer, utm: new URLSearchParams(location.search).get('utm_source') }) }).catch(() => {});
+  } catch {}
+
   fetch('/api/config').then((r) => r.json()).then((c) => {
     state.fleet = Math.max(1, c.fleetSize || 1);
     $('timesHint').textContent = `Pick up from ${c.pickup.fromTime} on your pickup day. Return by ${c.pickup.returnByTime} on your return day.`;
@@ -469,7 +475,7 @@
     try {
       const qs = tripQuery();
       const [avail, agr] = await Promise.all([
-        fetch('/api/availability?' + qs).then((r) => r.json()),
+        fetch('/api/availability?view=1&' + qs).then((r) => r.json()),
         fetch('/api/agreement?' + qs).then((r) => r.json()),
       ]);
       if (mySeq !== availSeq) return;

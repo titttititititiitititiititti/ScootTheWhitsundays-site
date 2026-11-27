@@ -61,6 +61,17 @@ export const longTerm = {
   reminderHour: 9,
 };
 
+export const visitorStats = {
+  // "Someone checked prices" email: sent this many minutes after they stop looking,
+  // so it can say whether they went on to pay.
+  alertAfterQuietMinutes: 3,
+  // Most price-check emails per day. Resend's free plan allows 100 emails a day in
+  // total, and booking confirmations need some of those.
+  maxPriceAlertsPerDay: 25,
+  // Evening summary of the day's visitors, after this hour (Brisbane time).
+  summaryHour: 20,
+};
+
 export const business = {
   name: 'Airlie Scooter Hire',
   phone: '+61 478 393 479',

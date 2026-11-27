@@ -8,7 +8,8 @@ import { tripOpts } from './public.js';
 import { freeBikeIds } from '../availability.js';
 import { buildAgreement, allItemIds, AGREEMENT_VERSION } from '../agreement.js';
 import { booking as site } from '../config.js';
-import { rateLimit } from '../rateLimit.js';
+import { rateLimit, clientIp } from '../rateLimit.js';
+import { track } from '../visitors.js';
 
 const r = Router();
 
@@ -156,7 +157,7 @@ r.post('/bookings', rateLimit({ windowMs: 60 * 60 * 1000, max: 15 }), async (req
         d.lic12m, d.accidents, d.accidentInfo || null, d.restrictions, d.restrictionInfo || null,
         q.start, q.end, q.days, q.rent, q.bond, q.bondMethod,
         String(site.pendingHoldMinutes), JSON.stringify(agreement), d.signatureName, d.signatureDate,
-        now.toISOString(), req.ip, bookingId, d.requestKey,
+        now.toISOString(), clientIp(req), bookingId, d.requestKey,
         q.delivery, q.collection, q.deliveryTotal,
       ],
     ))[0];
@@ -192,6 +193,7 @@ r.post('/bookings', rateLimit({ windowMs: 60 * 60 * 1000, max: 15 }), async (req
       return res.status(502).json({ error: 'Online payment is unavailable right now. Please try again in a few minutes or call us.' });
     }
   }
+  track(req, 'checkout', { start: q.start, end: q.end, days: q.days, scooters: q.count, amount: q.rent + q.deliveryTotal, bookingId });
   res.status(201).json({ bookingId, bikeNumbers: result.bikeNumbers, quote: q, checkoutUrl });
 });
 

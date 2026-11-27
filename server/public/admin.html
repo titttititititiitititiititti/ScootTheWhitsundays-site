@@ -114,6 +114,8 @@
 
   /* money */
   .big { font-family: 'Fraunces', serif; font-size: 1.9rem; }
+  .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+  .seg .btn { min-height: 38px; padding: 0.4rem; font-size: 0.88rem; }
   .stat { background: var(--bg); border-radius: 0.75rem; padding: 0.75rem; }
   .stat small { color: var(--muted); font-size: 0.8rem; }
   table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
@@ -123,7 +125,7 @@
   .barline { height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--red), var(--warm), var(--gold)); margin-top: 0.3rem; }
 
   /* bottom tabs */
-  nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: env(safe-area-inset-bottom); z-index: 10; }
+  nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(5, 1fr); padding-bottom: env(safe-area-inset-bottom); z-index: 10; }
   nav.tabs button { background: none; border: none; padding: 0.55rem 0 0.6rem; display: flex; flex-direction: column; align-items: center; gap: 0.1rem; color: var(--muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; }
   nav.tabs button b { font-size: 1.3rem; line-height: 1.2; font-weight: 400; }
   nav.tabs button.on { color: var(--red); }
@@ -150,6 +152,7 @@
     <button data-tab="scooters"><b>🛵</b>Scooters</button>
     <button data-tab="prices"><b>🏷️</b>Prices</button>
     <button data-tab="money"><b>💰</b>Money</button>
+    <button data-tab="visitors"><b>👀</b>Visitors</button>
   </nav>
 </div>
 <div class="toast" id="toast" hidden></div>
@@ -215,7 +218,7 @@
   $('logout').addEventListener('click', async () => { await api('/logout', { method: 'POST' }).catch(() => {}); showPin('Logged out'); });
 
   // ── Tabs ──
-  const titles = { bookings: 'Bookings', scooters: 'Scooters', prices: 'Prices', money: 'Money' };
+  const titles = { bookings: 'Bookings', scooters: 'Scooters', prices: 'Prices', money: 'Money', visitors: 'Visitors' };
   $('tabs').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
     tab = b.dataset.tab; try { localStorage.setItem('adminTab', tab); } catch {}
@@ -232,7 +235,7 @@
   function render() {
     $('tabTitle').textContent = titles[tab];
     [...$('tabs').children].forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
-    ({ bookings: renderBookings, scooters: renderScooters, prices: renderPrices, money: renderMoney })[tab]();
+    ({ bookings: renderBookings, scooters: renderScooters, prices: renderPrices, money: renderMoney, visitors: renderVisitors })[tab]();
   }
 
   // ── Bookings ──
@@ -555,6 +558,67 @@
           <div class="barline" style="width:${Math.round((b.all / top) * 100)}%"></div></td>
           <td class="n">${money(b.month)}</td><td class="n"><b>${money(b.all)}</b></td></tr>`).join('')}
         </tbody></table></section>`;
+  }
+
+  // ── Visitors ──
+  let visitorDays = 1, visitorData = null, visitorSeq = 0;
+  async function renderVisitors() {
+    const seq = ++visitorSeq;
+    if (!visitorData || visitorData.days !== visitorDays) $('view').innerHTML = '<section class="card"><p class="muted">Loading…</p></section>';
+    try {
+      const d = await api('/visitors?days=' + visitorDays);
+      if (seq !== visitorSeq || tab !== 'visitors') return;
+      visitorData = d;
+      drawVisitors();
+    } catch (e) {
+      if (seq === visitorSeq && tab === 'visitors') $('view').innerHTML = `<section class="card"><p class="err">${esc(e.message)}</p></section>`;
+    }
+  }
+  function drawVisitors() {
+    const d = visitorData, f = d.funnel;
+    const steps = [
+      ['Visited the website', f.visit],
+      ['Opened the booking page', f.bookOpen],
+      ['Saw a price', f.priceSeen],
+      ['Went to payment', f.checkout],
+      ['Booked and paid', f.paid],
+    ];
+    const top = Math.max(1, ...steps.map((x) => x[1]));
+    const lost = Math.max(0, f.priceSeen - f.checkout);
+    const outcome = {
+      booked: '<span class="pill ok">Booked</span>',
+      payment: '<span class="pill warn">Went to payment, didn’t pay</span>',
+      left: '<span class="pill bad">Saw price, left</span>',
+    };
+    const when = (iso) => new Date(iso).toLocaleString('en-AU', { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+    const opt = (o) => `${fmt(o.start)} → ${fmt(o.end)} · ${plural(o.days, 'day')} · ${plural(o.scooters, 'scooter')} · <b>${money(o.amount)}</b>`;
+    $('view').innerHTML = `
+      <section class="card">
+        <div class="seg" id="visRange">${[[1, 'Today'], [7, '7 days'], [30, '30 days']].map(([n, l]) =>
+          `<button class="btn ${n === visitorDays ? '' : 'quiet'}" data-days="${n}">${l}</button>`).join('')}</div>
+        <table style="margin-top:0.6rem"><tbody>
+        ${steps.map(([k, v]) => `<tr><td>${k}<div class="barline" style="width:${Math.round((v / top) * 100)}%"></div></td><td class="n"><b>${v}</b></td></tr>`).join('')}
+        </tbody></table>
+        ${f.priceSeen ? `<p class="small" style="margin-top:0.6rem">${lost ? `<b>${plural(lost, 'person')}</b> saw a price and didn’t go on to payment.` : 'Everyone who saw a price went on to payment.'}</p>` : ''}
+        <p class="small muted" style="margin-top:0.4rem">People, not page views. Bots and your own visits while logged in here aren’t counted. No names or contact details are recorded.</p>
+      </section>
+      ${d.lengths.length ? `<section class="card"><h2>By hire length</h2>
+        <p class="small muted">If short hires rarely go to payment but longer ones do, the single-day price may be too high.</p>
+        <table><thead><tr><th>Looking at</th><th class="n">Saw price</th><th class="n">Went to payment</th></tr></thead><tbody>
+        ${d.lengths.map((x) => `<tr><td>${esc(x.length)}</td><td class="n">${x.saw_price}</td><td class="n">${x.went_to_payment} <span class="muted small">(${Math.round((x.went_to_payment / x.saw_price) * 100)}%)</span></td></tr>`).join('')}
+        </tbody></table></section>` : ''}
+      ${d.sources.length ? `<section class="card"><h2>Where they came from</h2>
+        <table><tbody>${d.sources.map((x) => `<tr><td>${esc(x.source)}</td><td class="n"><b>${x.visitors}</b></td></tr>`).join('')}</tbody></table></section>` : ''}
+      <section class="card"><h2>Recent price checks</h2>
+        ${d.recent.length ? d.recent.map((r) => `<div style="padding:0.6rem 0;border-top:1px solid var(--border)">
+          <div class="row"><span class="small muted">${esc(when(r.at))} · from ${esc(r.source)}</span>${outcome[r.outcome] || ''}</div>
+          ${r.options.map((o) => `<div class="small" style="margin-top:0.2rem">${opt(o)}</div>`).join('')}
+        </div>`).join('') : '<p class="muted small">Nobody has checked a price yet in this period.</p>'}
+      </section>`;
+    $('visRange').addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-days]'); if (!b) return;
+      visitorDays = Number(b.dataset.days); renderVisitors();
+    });
   }
 
   try { const saved = localStorage.getItem('adminTab'); if (titles[saved]) tab = saved; } catch {}
