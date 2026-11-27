@@ -109,7 +109,9 @@
     }
     // confirmed / active / returned / bond_released
     render('✓', 'ok', `You're booked, ${b.name}!`,
-      `<p>We've emailed your lockbox code and pickup instructions to <strong>${esc(b.email)}</strong>. Check your junk folder if it hasn't arrived in a few minutes.</p>`,
+      `<p>We've emailed your lockbox code and pickup instructions to:</p>
+      <p style="font-size:1.1rem;margin:0.4rem 0"><strong>${esc(b.email)}</strong></p>
+      <p style="font-size:0.9rem">Check your junk folder if it hasn't arrived in a few minutes. <b>Wrong email?</b> Call or text <a href="tel:0478393479">0478 393 479</a> and we'll sort it.</p>`,
       summary(b) + `<a class="btn" href="/trip?t=${encodeURIComponent(t)}">Open your trip page</a><p style="font-size:0.85rem;margin-top:0.75rem">Your trip page is where you add the pickup and return videos. The link is also in your email.</p>`);
   }
 
