@@ -559,7 +559,7 @@
       : `${plural(q.days, 'day')} × ${money(q.perDay)}`;
     const many = q.count > 1;
     const bondNote = q.bondMethod === 'hold'
-      ? `The bond is a temporary hold on your card. It is not charged, and it is released after you return ${many ? 'the scooters' : 'the scooter'}.`
+      ? ''
       : `The bond is charged now and refunded to your card after you return ${many ? 'the scooters' : 'the scooter'}.`;
     $('priceBox').innerHTML = `
       <div class="price-row"><span>Rent per scooter (${line})</span><span>${money(q.rentEach)}</span></div>
@@ -567,10 +567,11 @@
       ${q.deliveryTotal ? `<div class="price-row"><span>${q.delivery && q.collection ? 'Delivery + pick-up' : q.delivery ? 'Delivery' : 'Pick-up at the end'}</span><span>${money(q.deliveryTotal)}</span></div>` : ''}
       ${q.bondMethod === 'hold' ? `
       <div class="price-row total"><span>You pay today</span><span>${money(q.rent + q.deliveryTotal)}</span></div>
-      <div class="price-row"><span>Plus a bond hold on your card${many ? ` (${money(q.bondEach)} each)` : ''}</span><span>${money(q.bond)}</span></div>` : `
+      <div class="price-row"><span>Plus a bond hold on your card${many ? ` (${money(q.bondEach)} each)` : ''}</span><span>${money(q.bond)}</span></div>
+      <p class="price-note"><b>Heads up:</b> straight after you pay ${money(q.rent + q.deliveryTotal)}, ${money(q.bond)} is held on the same card. Your bank may show it as pending. It is not charged, and it is released after you return ${many ? 'the scooters' : 'the scooter'}.</p>` : `
       <div class="price-row"><span>Refundable bond${many ? ` (${money(q.bondEach)} each)` : ''}</span><span>${money(q.bond)}</span></div>
       <div class="price-row total"><span>You pay today</span><span>${money(q.rent + q.deliveryTotal + q.bond)}</span></div>`}
-      <p class="price-note">${bondNote} Helmets included.</p>`;
+      <p class="price-note">${bondNote ? bondNote + ' ' : ''}Helmets included.</p>`;
     show($('priceBox'));
   }
 
@@ -712,7 +713,7 @@
       const label = nums.length ? (nums.length === 1 ? 'Bike ' : 'Bikes ') + nums.join(', ') : 'No bikes chosen';
       const q = state.quote;
       $('barTotal').innerHTML = q.bondMethod === 'hold'
-        ? `${label} · ${plural(q.days, 'day')}<strong>${money(q.rent + q.deliveryTotal)}</strong>+ ${money(q.bond)} bond hold`
+        ? `${label} · ${plural(q.days, 'day')}<strong>${money(q.rent + q.deliveryTotal)}</strong>+ ${money(q.bond)} bond hold (not charged)`
         : `${label} · ${plural(q.days, 'day')}<strong>${money(q.rent + q.deliveryTotal + q.bond)}</strong>incl. ${money(q.bond)} bond`;
     }
     $('submitBtn').disabled = !ready;

@@ -38,7 +38,15 @@ export async function createBookingCheckout(b, bikeNumbers) {
   const hire = `Scooter hire: ${bikesLabel(bikeNumbers)}, ${b.days} day${b.days === 1 ? '' : 's'}`;
   const lineItems = [{
     quantity: 1,
-    price_data: { currency: pricing.currency, unit_amount: b.rent_amount, product_data: { name: hire, description: dates } },
+    price_data: {
+      currency: pricing.currency, unit_amount: b.rent_amount,
+      product_data: {
+        name: hire,
+        description: b.bond_method === 'hold'
+          ? `${dates}. After payment, a ${money(b.bond_amount)} bond is held on this card: not charged, released after return.`
+          : dates,
+      },
+    },
   }];
   if (b.delivery_amount > 0) {
     const trips = [b.delivery && 'Delivery', b.collection && 'collection'].filter(Boolean).join(' & ');
@@ -70,7 +78,7 @@ export async function createBookingCheckout(b, bikeNumbers) {
       ...(b.bond_method === 'hold' ? { setup_future_usage: 'off_session' } : {}),
     },
     custom_text: b.bond_method === 'hold'
-      ? { submit: { message: `After payment, a ${money(b.bond_amount)} bond hold is placed on this card. It is not charged and is released after the scooters are returned.` } }
+      ? { submit: { message: `You pay the amount above now. Straight after, a ${money(b.bond_amount)} bond is HELD on this card (your bank may show it as pending). It is not charged, and it is released after the scooters are returned.` } }
       : undefined,
     expires_at: Math.floor(Date.now() / 1000) + site.checkoutWindowMinutes * 60 + 30,
     success_url: `${baseUrl()}/booked?t=${b.access_token}`,
