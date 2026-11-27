@@ -149,6 +149,21 @@ test('Stripe checkout expires unpaid → cancelled; a late payment on a cancelle
   assert.ok(calls.some((c) => c[0] === 'refund'));
 });
 
+test('status page confirms a paid booking by asking Stripe, even if the webhook never arrives', async () => {
+  const { b } = await book({ startIn: 50, days: 3, bikeIds: [1] });
+  const status = () => fetch(`${base}/api/booking-status?t=${b.access_token}`).then((r) => r.json());
+  fake.checkout.sessions.retrieve = async (id) => ({ id, status: 'open', payment_status: 'unpaid', metadata: { bookingId: b.id, kind: 'booking' } });
+  assert.equal((await status()).status, 'pending_payment', 'not paid yet');
+  fake.checkout.sessions.retrieve = async (id) => ({ id, status: 'complete', payment_status: 'paid', payment_intent: 'pi_rent_sync', customer: 'cus_1', metadata: { bookingId: b.id, kind: 'booking' } });
+  const before = confirmed.length;
+  assert.equal((await status()).status, 'confirmed');
+  assert.equal(confirmed.length, before + 1);
+  await completed(b); // the late webhook must not confirm (or email) twice
+  assert.equal((await status()).status, 'confirmed');
+  assert.equal(confirmed.length, before + 1);
+  fake.checkout.sessions.retrieve = async () => ({ status: 'expired' });
+});
+
 test('webhook rejects requests without a valid Stripe signature', async () => {
   process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test';
   fake.webhooks = { constructEvent: () => { throw new Error('No signatures found'); } };

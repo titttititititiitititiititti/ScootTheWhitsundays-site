@@ -2,7 +2,7 @@ import { Router } from 'express';
 import crypto from 'node:crypto';
 import { tx, query } from '../db.js';
 import { decodeImageDataUrl, saveLicencePhotos, deleteBookingFiles } from '../uploads.js';
-import { stripe, createBookingCheckout, createBondCheckout, cancelUnpaid, bikeNumbersFor } from '../payments.js';
+import { stripe, createBookingCheckout, createBondCheckout, cancelUnpaid, bikeNumbersFor, syncCheckout } from '../payments.js';
 import { quote, todayLocal, dayDiff, isIsoDate } from '../pricing.js';
 import { tripOpts } from './public.js';
 import { freeBikeIds } from '../availability.js';
@@ -219,8 +219,15 @@ async function findByToken(t) {
 
 // GET /api/booking-status?t=… — what the customer sees after Stripe sends them back
 r.get('/booking-status', async (req, res) => {
-  const b = await findByToken(req.query.t);
+  let b = await findByToken(req.query.t);
   if (!b) return res.status(404).json({ error: 'Booking not found.' });
+  if (b.status === 'pending_payment' && !b.paid_at) {
+    try {
+      if (await syncCheckout(b)) b = await findByToken(req.query.t);
+    } catch (err) {
+      console.warn(`[stripe] status check for ${b.id} failed: ${err.message}`);
+    }
+  }
   res.json({
     status: b.status, bondStatus: b.bond_status, bondMethod: b.bond_method,
     bikeNumbers: await bikeNumbersFor(b.id),

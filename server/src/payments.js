@@ -194,6 +194,20 @@ export async function cancelUnpaid(bookingId) {
   return rows.length > 0;
 }
 
+/**
+ * Asks Stripe directly whether an unpaid booking's checkout has been paid, and confirms it if so.
+ * Used by the "confirming your payment" page so the customer isn't left waiting on the webhook.
+ * Safe: the answer comes from Stripe's API (with our secret key), never from the browser.
+ */
+export async function syncCheckout(b) {
+  if (!stripe() || b.status !== 'pending_payment' || !b.stripe_checkout_session_id) return false;
+  const s = await stripe().checkout.sessions.retrieve(b.stripe_checkout_session_id);
+  if (s.metadata?.bookingId !== b.id || s.metadata?.kind !== 'booking') return false;
+  if (s.status !== 'complete' || s.payment_status !== 'paid') return false;
+  await onRentPaid(b.id, s);
+  return true;
+}
+
 /** Handles a verified Stripe webhook event. */
 export async function handleStripeEvent(event) {
   const s = event.data.object;
